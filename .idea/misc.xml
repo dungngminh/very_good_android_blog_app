@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/button_background.xml" value="0.3095" />
+        <entry key="app/src/main/res/drawable/ic_add_user.xml" value="0.3095" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3095" />
+        <entry key="app/src/main/res/drawable/textfield_background.xml" value="0.3095" />
+        <entry key="app/src/main/res/font-v26/nunito.xml" value="0.3854166666666667" />
+        <entry key="app/src/main/res/font/nunito.xml" value="0.3854166666666667" />
+        <entry key="app/src/main/res/layout-v28/fragment_login.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2375" />
+        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.35625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

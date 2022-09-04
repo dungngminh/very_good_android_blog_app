@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#864AFC</color>
+    <color name="field">#F6F6F6</color>
+    <color name="primary_text">#585858</color>
+    <color name="primary_dark_text">#3E3E3E</color>
+    <color name="small_text">#797979</color>
+    <color name="description_text">#888888</color>
+    <color name="unselected">#757377</color>
+    <color name="unselected_text_chip">#9A9A9A</color>
+    <color name="purple_support">#EBE0FF</color>
+    <color name="white_background">#FFFFFF</color>
+    <color name="purple_700_support">#C4B0E0</color>
+    <color name="pink_500_support">#FFC7D3</color>
+    <color name="mint_support">#D2EBE8</color>
+    <color name="pink_500">#FC4A71</color>
+    <color name="purple_700">#23005c</color>
+    <color name="mint">#157E72</color>
+    <color name="deep_purple">#200E32</color>
+    <color name="red_300">#EC4D4D</color>
+    <color name="shimmer_base">#E0E0E0</color>
+    <color name="shimmer_hightlight">#F5F5F5</color>
+</resources>
