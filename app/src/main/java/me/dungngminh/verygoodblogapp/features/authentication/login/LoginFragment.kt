@@ -1,4 +1,4 @@
-package me.dungngminh.authenticationapp.features.authentication.login
+package me.dungngminh.verygoodblogapp.features.authentication.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import me.dungngminh.authenticationapp.databinding.FragmentLoginBinding
+import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
+import me.dungngminh.verygoodblogapp.utils.hideKeyboard
 
 
 class LoginFragment : Fragment() {
@@ -26,16 +27,20 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViews()
+    }
 
+    private fun setupViews(){
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
         }
-
+        hideKeyboard()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

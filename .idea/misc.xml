@@ -11,7 +11,7 @@
         <entry key="app/src/main/res/font/nunito.xml" value="0.3854166666666667" />
         <entry key="app/src/main/res/layout-v28/fragment_login.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2375" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.35625" />
       </map>
     </option>

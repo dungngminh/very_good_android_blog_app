@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
+    android:fillViewport="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".features.authentication.RegisterFragment">
+    android:layout_height="wrap_content"
+    tools:context=".features.authentication.register.RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -24,13 +24,14 @@
             android:drawableTint="@color/primary"
             android:ems="10"
             android:hint="Input your confirmation password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:minHeight="48dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView8"
@@ -42,7 +43,7 @@
             app:layout_constraintStart_toStartOf="@+id/et_confirmationPassword"
             app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,7 +69,7 @@
             app:layout_constraintStart_toStartOf="@+id/et_username"
             app:layout_constraintTop_toBottomOf="@+id/et_lastname" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

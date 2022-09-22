@@ -1,4 +1,4 @@
-package me.dungngminh.authenticationapp
+package me.dungngminh.verygoodblogapp
 
 import org.junit.Test
 
