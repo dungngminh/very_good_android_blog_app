@@ -7,14 +7,14 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class LocalUserDataSourceImpl(@Inject private val pref: SharedPreferences) : LocalUserDataSource {
+class LocalUserDataSourceImpl @Inject constructor(private val pref: SharedPreferences) : LocalUserDataSource {
     private val prefSubject = BehaviorSubject.createDefault(pref);
 
     private companion object {
         private const val JWT_KEY = "JWT"
         private const val USERID_KEY = "USERID"
-    }
 
+    }
     override fun getJwt(): Observable<String> = prefSubject.map { it.getString(JWT_KEY, "")!! }
 
     override fun getUserId(): Observable<String> = prefSubject.map { it.getString(USERID_KEY, "")!! }

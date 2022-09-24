@@ -92,7 +92,6 @@ interface LoginContract {
     }
 }
 
-@Singleton
 class LoginInteractor @Inject constructor(private val authenticationRepository: AuthenticationRepository) :
     Interactor {
     override fun login(username: String, password: String): Observable<StateChange> {

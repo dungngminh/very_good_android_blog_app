@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import dagger.hilt.android.AndroidEntryPoint
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.features.helpers.ViewHelpers
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

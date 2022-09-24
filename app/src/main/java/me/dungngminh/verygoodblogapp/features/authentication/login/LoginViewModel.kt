@@ -1,13 +1,13 @@
 package me.dungngminh.verygoodblogapp.features.authentication.login
 
-import android.view.View
-import androidx.lifecycle.Lifecycle.Event
-import androidx.lifecycle.ViewModel
+import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.ofType
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
 import javax.inject.Inject
@@ -15,20 +15,22 @@ import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract
 import me.dungngminh.verygoodblogapp.utils.asObservable
 import me.dungngminh.verygoodblogapp.utils.exhaustMap
 import me.dungngminh.verygoodblogapp.utils.mapNotNull
+import timber.log.Timber
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val interactor: LoginContract.Interactor) :
     BaseViewModel() {
 
-    private val stateS = BehaviorSubject.create<ViewState> { initialState }
+    private val stateS = BehaviorRelay.create<ViewState>()
     private val eventS = PublishRelay.create<SingleEvent>()
-    private val stateDistinctS = stateS.distinctUntilChanged()
 
     private val initialState = ViewState.initial()
     private val intentS = PublishRelay.create<ViewIntent>()
 
-    val state get() = stateDistinctS
-    val event get() = eventS.asObservable()
+    val stateObservable = stateS.distinctUntilChanged()
+    val eventObservable = eventS.hide()
+
+    val state get() = stateS.value!!
 
     fun processIntents(intents: Observable<ViewIntent>): Disposable = intents.subscribe(intentS)
 
@@ -79,9 +81,18 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
             usernameObservable.map { StateChange.UsernameChanged(it.first) },
             passwordObservable.map { StateChange.PasswordChanged(it.first) },
             usernameObservable.map { StateChange.UsernameError(it.second) },
-            passwordObservable.map {StateChange.PasswordError(it.second)},
-            intentS.ofType<StateChange.UsernameChangedFirstTime>().map{StateChange.UsernameChangedFirstTime},
-                        )
+            passwordObservable.map { StateChange.PasswordError(it.second) },
+            intentS.ofType<ViewIntent.UsernameFirstChanged>()
+                .map { StateChange.UsernameChangedFirstTime },
+            intentS.ofType<ViewIntent.PasswordFirstChanged>()
+                .map { StateChange.PasswordChangedFirstTime }
+        ).observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                Timber.d(it.toString())
+                Timber.d("hehe")
+            }
+            .scan(initialState) { state, change -> change.emit(state) }
+            .subscribe(stateS)
 
 
     }
