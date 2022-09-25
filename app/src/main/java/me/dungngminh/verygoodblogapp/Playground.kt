@@ -98,4 +98,8 @@ fun main() {
     }, onComplete = {
         println("completed")
     })
+
+    obs1.doOnNext { println("hehe") }.subscribe {
+        print(it)
+    }
 }

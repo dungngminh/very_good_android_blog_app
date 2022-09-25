@@ -17,6 +17,7 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.ValidationError
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.ViewIntent
+import me.dungngminh.verygoodblogapp.utils.getFirstChange
 import me.dungngminh.verygoodblogapp.utils.hideKeyboard
 import timber.log.Timber
 
@@ -32,7 +33,7 @@ class LoginFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,8 +59,20 @@ class LoginFragment : BaseFragment() {
                     else -> null
                 }
                     .let {
-                        if(usernameLayout.error != it && state.isUsernameChanged) usernameLayout.error = it
+                        if (usernameLayout.error != it && state.isUsernameChanged) usernameLayout.error =
+                            it
                     }
+                when (ValidationError.EMPTY_PASSWORD) {
+                    in state.passwordError -> {
+                        "Password must be not empty"
+                    }
+                    else -> {
+                        null
+                    }
+                }.let { message ->
+                    if (passwordLayout.error != message && state.isPasswordChanged) passwordLayout.error =
+                        message
+                }
             }
         }).addTo(startStopDisposable)
     }
@@ -68,13 +81,14 @@ class LoginFragment : BaseFragment() {
         viewModel.processIntents(Observable.mergeArray(
             binding.etUsername.textChanges()
                 .map { ViewIntent.UsernameChanged(it.toString()) },
-            binding.etUsername.textChanges()
-                .skipInitialValue()
-                .take(1)
-//                .unsubscribeOn(AndroidSchedulers.mainThread())
-                .map { ViewIntent.UsernameFirstChanged }
-
-        )).addTo(compositeDisposable)
+            binding.etUsername.getFirstChange()
+                .map { ViewIntent.UsernameFirstChanged },
+            binding.etPassword.textChanges()
+                .map { ViewIntent.PasswordChanged(it.toString()) },
+            binding.etPassword.getFirstChange()
+                .map { ViewIntent.PasswordFirstChanged }
+        ))
+            .addTo(compositeDisposable)
     }
 
     private fun setupViews() {

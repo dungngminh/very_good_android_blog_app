@@ -21,7 +21,7 @@ import timber.log.Timber
 class LoginViewModel @Inject constructor(private val interactor: LoginContract.Interactor) :
     BaseViewModel() {
 
-    private val stateS = BehaviorRelay.create<ViewState>()
+    private val stateS = BehaviorSubject.create<ViewState>()
     private val eventS = PublishRelay.create<SingleEvent>()
 
     private val initialState = ViewState.initial()
@@ -93,12 +93,9 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
             }
             .scan(initialState) { state, change -> change.emit(state) }
             .subscribe(stateS)
-
-
     }
 
     private companion object {
-        val tooShortPassword = setOf(ValidationError.TOO_SHORT_PASSWORD)
         val tooShortUsername = setOf(ValidationError.TOO_SHORT_USERNAME)
         val emptyUsername = setOf(ValidationError.EMPTY_USERNAME)
         val emptyPassword = setOf(ValidationError.EMPTY_PASSWORD)
@@ -114,7 +111,6 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
         fun getPasswordErrors(password: String): Set<ValidationError> {
             return when {
                 password.isBlank() -> emptyPassword
-                password.length <= 3 -> tooShortPassword
                 else -> emptySet()
             }
         }

@@ -15,7 +15,6 @@ interface LoginContract {
     enum class ValidationError {
         EMPTY_USERNAME,
         TOO_SHORT_USERNAME,
-        TOO_SHORT_PASSWORD,
         EMPTY_PASSWORD,
     }
 
