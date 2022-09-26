@@ -91,6 +91,11 @@ class Foo2 {
 //    var foo2 = Foo2(name = "", number = 0);
 //}
 
+inline fun foo(crossinline abc: () -> Unit){
+    abc()
+}
+
+
 fun main() {
     val obs1 = Observable.just("a", "b", "c", "d", "e");
     obs1.map { it + "b" }.filter { it.startsWith("a") }.subscribeBy(onNext = { result ->
@@ -101,5 +106,10 @@ fun main() {
 
     obs1.doOnNext { println("hehe") }.subscribe {
         print(it)
+    }
+
+    foo {
+        println("hehe")
+        return@foo
     }
 }

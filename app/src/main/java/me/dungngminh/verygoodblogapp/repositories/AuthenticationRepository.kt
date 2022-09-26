@@ -1,8 +1,6 @@
 package me.dungngminh.verygoodblogapp.repositories
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSource
@@ -22,15 +20,21 @@ class AuthenticationRepository @Inject constructor(
 ) {
 
     fun login(username: String, password: String): Single<LoginUserResponse> =
-        apiService.login(LoginUserBody(username, password)).doOnSuccess {
-            Timber.tag(AuthenticationRepository.TAG)
-            Timber.d("Login Successfully: $it")
-        }.doOnError {
-            Timber.tag(AuthenticationRepository.TAG)
-            Timber.d("Login Error: $it")
-        }.flatMap { response ->
-            saveLocal(response).onErrorComplete().andThen(Single.just(response))
-        }.subscribeOn(Schedulers.io())
+        apiService.login(LoginUserBody(username, password))
+            .doOnSuccess {
+                Timber.tag(TAG)
+                Timber.d("Login Successfully: $it")
+            }
+            .doOnError {
+                Timber.tag(TAG)
+                Timber.d("Login Error: $it")
+            }
+            .flatMap { response ->
+                saveLocal(response)
+                    .onErrorComplete()
+                    .andThen(Single.just(response))
+            }
+            .subscribeOn(Schedulers.io())
 
     fun register(
         username: String,
@@ -43,10 +47,10 @@ class AuthenticationRepository @Inject constructor(
         confirmationPassword,
         firstname,
         lastname)).doOnSuccess {
-        Timber.tag(AuthenticationRepository.TAG)
+        Timber.tag(TAG)
         Timber.d("Register Successfully: $it")
     }.doOnError {
-        Timber.tag(AuthenticationRepository.TAG)
+        Timber.tag(TAG)
         Timber.d("Register Error: $it")
     }.subscribeOn(Schedulers.io())
 

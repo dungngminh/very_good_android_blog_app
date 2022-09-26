@@ -1,24 +1,21 @@
 package me.dungngminh.verygoodblogapp.features.authentication.login
 
-import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.ofType
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
-import javax.inject.Inject
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.*
-import me.dungngminh.verygoodblogapp.utils.asObservable
 import me.dungngminh.verygoodblogapp.utils.exhaustMap
 import me.dungngminh.verygoodblogapp.utils.mapNotNull
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val interactor: LoginContract.Interactor) :
+class LoginViewModel @Inject constructor(private val interactor: Interactor) :
     BaseViewModel() {
 
     private val stateS = BehaviorSubject.create<ViewState>()
@@ -27,8 +24,8 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
     private val initialState = ViewState.initial()
     private val intentS = PublishRelay.create<ViewIntent>()
 
-    val stateObservable = stateS.distinctUntilChanged()
-    val eventObservable = eventS.hide()
+    val stateObservable: Observable<ViewState> = stateS.distinctUntilChanged()
+    val eventObservable: Observable<SingleEvent> = eventS.hide()
 
     val state get() = stateS.value!!
 
@@ -62,7 +59,10 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
                 }
 
             }.exhaustMap { (username, password) ->
+                Timber.d("Username = $username")
+                Timber.d("Password = $password")
                 interactor.login(username, password).doOnNext {
+                    Timber.d("StateChange = $it")
                     eventS.accept(when (it) {
                         StateChange.Loading -> return@doOnNext
                         StateChange.LoginFailed -> SingleEvent.LoginFailed
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
                         StateChange.UsernameChangedFirstTime -> return@doOnNext
                         is StateChange.UsernameError -> return@doOnNext
                     })
-                }
+                }.onErrorReturn { StateChange.LoginFailed }
             }
 
         Observable.mergeArray(
@@ -85,12 +85,9 @@ class LoginViewModel @Inject constructor(private val interactor: LoginContract.I
             intentS.ofType<ViewIntent.UsernameFirstChanged>()
                 .map { StateChange.UsernameChangedFirstTime },
             intentS.ofType<ViewIntent.PasswordFirstChanged>()
-                .map { StateChange.PasswordChangedFirstTime }
+                .map { StateChange.PasswordChangedFirstTime },
+            loginChanges
         ).observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Timber.d(it.toString())
-                Timber.d("hehe")
-            }
             .scan(initialState) { state, change -> change.emit(state) }
             .subscribe(stateS)
     }

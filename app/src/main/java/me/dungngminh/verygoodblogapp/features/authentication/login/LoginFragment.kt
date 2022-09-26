@@ -1,22 +1,22 @@
 package me.dungngminh.verygoodblogapp.features.authentication.login
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.ValidationError
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.ViewIntent
+import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.*
+import me.dungngminh.verygoodblogapp.features.main.MainActivity
 import me.dungngminh.verygoodblogapp.utils.getFirstChange
 import me.dungngminh.verygoodblogapp.utils.hideKeyboard
 import timber.log.Timber
@@ -73,8 +73,31 @@ class LoginFragment : BaseFragment() {
                     if (passwordLayout.error != message && state.isPasswordChanged) passwordLayout.error =
                         message
                 }
+                if (state.isLoading) {
+                    progressBar.visibility = View.VISIBLE
+                    btnLogin.visibility = View.GONE
+                } else {
+                    progressBar.visibility = View.GONE
+                    btnLogin.visibility = View.VISIBLE
+                }
             }
+
         }).addTo(startStopDisposable)
+
+        viewModel.eventObservable.subscribeBy(onNext = { singleEvent ->
+            Timber.d("State = $singleEvent")
+            when (singleEvent) {
+                SingleEvent.LoginSuccess -> {
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    requireActivity().finish()
+                }
+                is SingleEvent.LoginFailed -> {
+                    Timber.d("LoginFailed")
+
+                }
+            }
+
+        })
     }
 
     private fun bindViewModel() {
@@ -86,7 +109,9 @@ class LoginFragment : BaseFragment() {
             binding.etPassword.textChanges()
                 .map { ViewIntent.PasswordChanged(it.toString()) },
             binding.etPassword.getFirstChange()
-                .map { ViewIntent.PasswordFirstChanged }
+                .map { ViewIntent.PasswordFirstChanged },
+            binding.btnLogin.clicks()
+                .map { ViewIntent.LoginSubmitted }
         ))
             .addTo(compositeDisposable)
     }

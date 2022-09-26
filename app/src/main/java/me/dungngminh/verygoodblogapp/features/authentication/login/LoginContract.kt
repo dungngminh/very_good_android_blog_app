@@ -1,15 +1,10 @@
 package me.dungngminh.verygoodblogapp.features.authentication.login
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.schedulers.Schedulers
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.*
+import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.Interactor
+import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.StateChange
 import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
-import java.lang.Thread.State
 import javax.inject.Inject
-import javax.inject.Singleton
 
 interface LoginContract {
     enum class ValidationError {
@@ -94,11 +89,14 @@ interface LoginContract {
 class LoginInteractor @Inject constructor(private val authenticationRepository: AuthenticationRepository) :
     Interactor {
     override fun login(username: String, password: String): Observable<StateChange> {
-        return authenticationRepository.login(username = username, password = password)
+        return authenticationRepository.login(
+            username = username,
+            password = password
+        )
             .toObservable()
             .map<StateChange> { StateChange.LoginSuccess }
             .startWithItem(StateChange.Loading)
-            .onErrorReturn { StateChange.LoginFailed }
+            .onErrorReturnItem(StateChange.LoginFailed)
     }
 
 }
