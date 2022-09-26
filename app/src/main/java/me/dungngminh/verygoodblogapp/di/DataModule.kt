@@ -12,6 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSource
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSourceImpl
 import me.dungngminh.verygoodblogapp.data.remote.ApiService
@@ -42,7 +43,7 @@ internal interface DataModule {
 
         @Provides
         @GoodBlogUrl
-        internal fun goodClientUrl() : String = "http://10.0.2.2"
+        internal fun goodClientUrl() : String = "http://10.0.2.2:8080/api/v1/"
 
         @Singleton
         @Provides
@@ -81,6 +82,7 @@ internal interface DataModule {
             client: OkHttpClient,
         ): Retrofit = Retrofit.Builder()
             .client(client)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(baseUrl)
             .build()

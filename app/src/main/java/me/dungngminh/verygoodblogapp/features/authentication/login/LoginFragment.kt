@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +20,7 @@ import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
 import me.dungngminh.verygoodblogapp.utils.getFirstChange
 import me.dungngminh.verygoodblogapp.utils.hideKeyboard
+import me.dungngminh.verygoodblogapp.utils.snack
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -92,8 +94,7 @@ class LoginFragment : BaseFragment() {
                     requireActivity().finish()
                 }
                 is SingleEvent.LoginFailed -> {
-                    Timber.d("LoginFailed")
-
+                    view?.snack("Login Failed")
                 }
             }
 
