@@ -13,8 +13,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
 
             <androidx.constraintlayout.widget.Guideline
@@ -83,16 +83,13 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:minHeight="48dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:textColorHint="#546E7A" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordLayout"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_height="match_parent"
                 android:hint="Password"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
@@ -101,29 +98,28 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/usernameLayout"
-                app:passwordToggleDrawable="@drawable/ic_hide"
+                app:passwordToggleDrawable="@drawable/show_password_selector"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/md_theme_light_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_password"
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_show"
-                    android:ems="10"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp" />
-
+                    android:minHeight="48dp"
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_forgot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="Forgot Password?"
                 android:textFontWeight="600"
-                app:layout_constraintEnd_toEndOf="@+id/passwordLayout"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
             <ProgressBar

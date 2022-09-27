@@ -111,7 +111,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toBottomOf="@+id/tilUsername"
-            app:passwordToggleDrawable="@drawable/ic_hide"
+            app:passwordToggleDrawable="@drawable/show_password_selector"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/md_theme_light_primary">
 

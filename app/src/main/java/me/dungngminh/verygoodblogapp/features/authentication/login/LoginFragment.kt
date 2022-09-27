@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +17,7 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.*
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
-import me.dungngminh.verygoodblogapp.utils.getFirstChange
+import me.dungngminh.verygoodblogapp.utils.firstChange
 import me.dungngminh.verygoodblogapp.utils.hideKeyboard
 import me.dungngminh.verygoodblogapp.utils.snack
 import timber.log.Timber
@@ -44,6 +43,7 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         bindViewModel()
+
     }
 
     override fun onStart() {
@@ -98,21 +98,21 @@ class LoginFragment : BaseFragment() {
                 }
             }
 
-        })
+        }).addTo(startStopDisposable)
     }
 
-    private fun bindViewModel() {
+   private fun bindViewModel() {
         viewModel.processIntents(Observable.mergeArray(
             binding.etUsername.textChanges()
                 .map { ViewIntent.UsernameChanged(it.toString()) },
-            binding.etUsername.getFirstChange()
+            binding.etUsername.firstChange()
                 .map { ViewIntent.UsernameFirstChanged },
             binding.etPassword.textChanges()
                 .map { ViewIntent.PasswordChanged(it.toString()) },
-            binding.etPassword.getFirstChange()
+            binding.etPassword.firstChange()
                 .map { ViewIntent.PasswordFirstChanged },
             binding.btnLogin.clicks()
-                .map { ViewIntent.LoginSubmitted }
+                .map { ViewIntent.LoginSubmitted },
         ))
             .addTo(compositeDisposable)
     }

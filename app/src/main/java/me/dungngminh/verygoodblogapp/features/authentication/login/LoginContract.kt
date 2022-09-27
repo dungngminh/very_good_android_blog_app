@@ -31,7 +31,7 @@ interface LoginContract {
                 password = null,
                 isLoading = false,
                 isUsernameChanged = false,
-                isPasswordChanged = false
+                isPasswordChanged = false,
             )
         }
     }
@@ -44,6 +44,7 @@ interface LoginContract {
 
         object UsernameFirstChanged : ViewIntent()
         object PasswordFirstChanged : ViewIntent()
+
     }
 
     sealed class SingleEvent {
@@ -75,6 +76,7 @@ interface LoginContract {
 
         object UsernameChangedFirstTime : StateChange()
         object PasswordChangedFirstTime : StateChange()
+
 
         data class UsernameChanged(val username: String) : StateChange()
         data class PasswordChanged(val password: String) : StateChange()

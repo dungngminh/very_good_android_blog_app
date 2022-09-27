@@ -38,11 +38,13 @@ class LoginViewModel @Inject constructor(private val interactor: Interactor) :
             .map { it to getUsernameErrors(it) }
             .share()
 
-        val passwordObservable = intentS.ofType<ViewIntent.PasswordChanged>()
-            .map { it.password }
-            .distinctUntilChanged()
-            .map { it to getPasswordErrors(it) }
-            .share()
+        val passwordObservable =
+            intentS
+                .ofType<ViewIntent.PasswordChanged>()
+                .map { it.password }
+                .distinctUntilChanged()
+                .map { it to getPasswordErrors(it) }
+                .share()
 
         val loginChanges = intentS.ofType<ViewIntent.LoginSubmitted>().withLatestFrom(
             usernameObservable,
@@ -74,19 +76,23 @@ class LoginViewModel @Inject constructor(private val interactor: Interactor) :
                         StateChange.UsernameChangedFirstTime -> return@doOnNext
                         is StateChange.UsernameError -> return@doOnNext
                     })
-                }.onErrorReturn { StateChange.LoginFailed }
+                }
             }
 
         Observable.mergeArray(
+            intentS.ofType<ViewIntent.UsernameFirstChanged>().doOnNext {
+                Timber.d("EVENT = $it")
+            }
+                .map { StateChange.UsernameChangedFirstTime },
+            intentS.ofType<ViewIntent.PasswordFirstChanged>().doOnNext {
+                Timber.d("EVENT = $it")
+            }
+                .map { StateChange.PasswordChangedFirstTime },
             usernameObservable.map { StateChange.UsernameChanged(it.first) },
             passwordObservable.map { StateChange.PasswordChanged(it.first) },
             usernameObservable.map { StateChange.UsernameError(it.second) },
             passwordObservable.map { StateChange.PasswordError(it.second) },
-            intentS.ofType<ViewIntent.UsernameFirstChanged>()
-                .map { StateChange.UsernameChangedFirstTime },
-            intentS.ofType<ViewIntent.PasswordFirstChanged>()
-                .map { StateChange.PasswordChangedFirstTime },
-            loginChanges
+            loginChanges,
         ).observeOn(AndroidSchedulers.mainThread())
             .scan(initialState) { state, change -> change.emit(state) }
             .subscribe(stateS)
