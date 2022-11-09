@@ -202,6 +202,9 @@ class RegisterViewModel @Inject constructor(
             passwordObservable.map { StateChange.PasswordChanged(it.first) },
             usernameObservable.map { StateChange.UsernameError(it.second) },
             passwordObservable.map { StateChange.PasswordError(it.second) },
+            passwordObservable.map { StateChange.PasswordChanged(it.first) },
+            confirmationPasswordObservable.map { StateChange.ConfirmationPasswordChanged(it.first) },
+            confirmationPasswordObservable.map { StateChange.ConfirmationPasswordError(it.second) },
             registerChanges,
         ).observeOn(AndroidSchedulers.mainThread())
             .scan(initialState) { state, change -> change.emit(state) }
