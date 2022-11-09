@@ -82,7 +82,7 @@ interface RegisterContract {
 
     sealed class SingleEvent {
         object RegisterSuccess : SingleEvent()
-        data class RegisterError(val error: Set<RegisterError>) : SingleEvent()
+        data class RegisterError(val throwable: Throwable) : SingleEvent()
     }
 
     sealed class StateChange {
@@ -145,9 +145,9 @@ interface RegisterContract {
     }
 }
 
-class RegisterInteractor @Inject constructor(private val authenticationRepository: AuthenticationRepository) :
+class RegisterInteractor
+@Inject constructor(private val authenticationRepository: AuthenticationRepository) :
     Interactor {
-
     override fun register(
         firstname: String,
         lastname: String,
