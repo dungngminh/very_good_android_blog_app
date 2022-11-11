@@ -146,6 +146,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/btnRegister"
+            app:layout_constraintStart_toStartOf="@+id/btnRegister"
+            app:layout_constraintTop_toTopOf="@+id/btnRegister" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"

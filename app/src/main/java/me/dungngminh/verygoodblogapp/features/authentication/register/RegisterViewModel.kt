@@ -74,8 +74,7 @@ class RegisterViewModel @Inject constructor(
                     .map { it.confirmationPassword }
                     .distinctUntilChanged()
             ) { password, confirmationPassword ->
-                Pair<String, String>(password,
-                    confirmationPassword)
+                password to confirmationPassword
             }.share()
 
         val passwordObservable =
@@ -99,17 +98,6 @@ class RegisterViewModel @Inject constructor(
                             )
                 }
                 .share()
-
-        val isMatchPasswordS =
-            bothPasswordsS
-                .map { pair ->
-                    val password = pair.first
-                    val confirmationPassword = pair.second
-
-                    password == confirmationPassword
-                }
-                .distinct()
-                .startWithItem(false)
 
         val registerChanges =
             intentS
@@ -170,7 +158,8 @@ class RegisterViewModel @Inject constructor(
                                 is StateChange.UsernameChanged -> return@doOnNext
                                 is StateChange.UsernameError -> return@doOnNext
                                 StateChange.UsernameFirstChanged -> return@doOnNext
-                            })
+                            }
+                            )
                         }
                 }
         Observable.mergeArray(
@@ -199,7 +188,6 @@ class RegisterViewModel @Inject constructor(
             lastnameObservable.map { StateChange.LastnameChanged(it.first) },
             lastnameObservable.map { StateChange.LastnameError(it.second) },
             usernameObservable.map { StateChange.UsernameChanged(it.first) },
-            passwordObservable.map { StateChange.PasswordChanged(it.first) },
             usernameObservable.map { StateChange.UsernameError(it.second) },
             passwordObservable.map { StateChange.PasswordError(it.second) },
             passwordObservable.map { StateChange.PasswordChanged(it.first) },
