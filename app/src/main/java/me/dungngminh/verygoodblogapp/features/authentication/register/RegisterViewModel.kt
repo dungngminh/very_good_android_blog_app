@@ -4,17 +4,12 @@ import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.kotlin.ofType
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract
 import me.dungngminh.verygoodblogapp.features.authentication.register.RegisterContract.*
-import me.dungngminh.verygoodblogapp.utils.exhaustMap
-import me.dungngminh.verygoodblogapp.utils.mapNotNull
-import timber.log.Timber
+import me.dungngminh.verygoodblogapp.utils.isEmail
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,179 +34,109 @@ class RegisterViewModel @Inject constructor(
     fun processIntents(intents: Observable<ViewIntent>): Disposable = intents.subscribe(intentS)
 
     init {
-        val firstnameObservable =
+        val fullNameObservable =
             intentS
-                .ofType<ViewIntent.FirstnameChanged>()
-                .map { it.firstname }
+                .ofType<ViewIntent.FullnameChanged>()
+                .map { it.fullname }
                 .distinctUntilChanged()
-                .map { it to getFirstnameErrors(it) }
+                .map { it to getFullNameErrors(it) }
                 .share()
 
-        val lastnameObservable =
-            intentS
-                .ofType<ViewIntent.LastnameChanged>()
-                .map { it.lastname }
+        val emailObservable =
+            intentS.ofType<ViewIntent.EmailChanged>()
+                .map { it.email }
                 .distinctUntilChanged()
-                .map { it to getLastnameErrors(it) }
+                .map { it to getEmailErrors(it) }
                 .share()
-
-        val usernameObservable =
-            intentS
-                .ofType<ViewIntent.UsernameChanged>()
-                .map { it.username }
-                .distinctUntilChanged()
-                .map { it to getUsernameErrors(it) }
-                .share()
-
-        val bothPasswordsS =
-            Observable.combineLatest(
-                intentS
-                    .ofType<ViewIntent.PasswordChanged>()
-                    .map { it.password }
-                    .distinctUntilChanged(),
-                intentS
-                    .ofType<ViewIntent.ConfirmationPasswordChanged>()
-                    .map { it.confirmationPassword }
-                    .distinctUntilChanged()
-            ) { password, confirmationPassword ->
-                password to confirmationPassword
-            }.share()
 
         val passwordObservable =
-            bothPasswordsS
-                .map { pair ->
-                    val password = pair.first
-                    password to getPasswordErrors(password)
-                }
+            intentS.ofType<ViewIntent.PasswordChanged>()
+                .map { it.password }
+                .distinctUntilChanged()
                 .share()
 
         val confirmationPasswordObservable =
-            bothPasswordsS
-                .map { pair ->
-                    val password = pair.first
-                    val confirmationPass = pair.second
-
-                    confirmationPass to
-                            getConfirmationPasswordErrors(
-                                password = password,
-                                confirmationPassword = confirmationPass
-                            )
-                }
+            intentS.ofType<ViewIntent.ConfirmationPasswordChanged>()
+                .map { it.confirmationPassword }
+                .distinctUntilChanged()
                 .share()
 
-        val registerChanges =
-            intentS
-                .ofType<ViewIntent.RegisterSubmitted>()
-                .withLatestFrom(
-                    firstnameObservable,
-                    lastnameObservable,
-                    usernameObservable,
-                    bothPasswordsS,
-                ) { _, firstnamePair, lastnamePair, usernamePair, bothPasswordPair ->
-                    (firstnamePair to lastnamePair) to
-                            (usernamePair to bothPasswordPair)
-                }.mapNotNull {
-                    val firstnameAndLastnamePair = it.first
-                    val usernameAndPasswordPair = it.second
+        val bothPasswordObservable =
+            Observable.combineLatest(
+                passwordObservable,
+                confirmationPasswordObservable,
+            ) { password, confirmationPassword ->
+                getPasswordErrors(password) to getConfirmationPasswordErrors(
+                    password,
+                    confirmationPassword
+                )
+            }.share()
 
-                    val (firstname, firstnameError) = firstnameAndLastnamePair.first
-                    val (lastname, lastnameError) = firstnameAndLastnamePair.second
+        val validationObservale =
+            Observable.combineLatest(
+                fullNameObservable,
+                emailObservable,
+                passwordObservable,
+                confirmationPasswordObservable,
+                bothPasswordObservable,
+            ) { fullNamePair, emailPair, password, confirmationPassword, passwordPair ->
+                val fullName = fullNamePair.first
+                val fullnameError = fullNamePair.second
 
-                    val (username, usernameError) = usernameAndPasswordPair.first
+                val email = emailPair.first
+                val emailError = emailPair.second
 
+                val passwordError = passwordPair.first
+                val confirmationPasswordError = passwordPair.second
 
-                    if (firstnameError.isEmpty() && lastnameError.isEmpty() && usernameError.isEmpty()) {
-                        firstname to lastname to username to usernameAndPasswordPair.second
-                    } else {
-                        null
-                    }
-                }.exhaustMap { it ->
-                    val (firstname, lastname) = it.first.first
-                    val username = it.first.second
-                    val (password, confirmation) = it.second
+                fullName.isNotBlank()
+                        && email.isNotBlank()
+                        && password.isNotBlank()
+                        && confirmationPassword.isNotBlank()
+                        && fullnameError.isEmpty()
+                        && emailError.isEmpty()
+                        && passwordError.isEmpty()
+                        && confirmationPasswordError.isEmpty()
+            }.share()
 
-                    interactor
-                        .register(
-                            firstname = firstname,
-                            lastname = lastname,
-                            username = username,
-                            password = password,
-                            confirmationPassword = confirmation
-                        ).doOnNext {
-                            Timber.d("StateChange = $it")
-                            eventS.accept(when (it) {
-                                is StateChange.ConfirmationPasswordChanged -> return@doOnNext
-                                is StateChange.ConfirmationPasswordError -> return@doOnNext
-                                StateChange.ConfirmationPasswordFirstChanged -> return@doOnNext
-                                is StateChange.FirstnameChanged -> return@doOnNext
-                                is StateChange.FirstnameError -> return@doOnNext
-                                StateChange.FirstnameFirstChanged -> return@doOnNext
-                                is StateChange.LastnameChanged -> return@doOnNext
-                                is StateChange.LastnameError -> return@doOnNext
-                                StateChange.LastnameFirstChanged -> return@doOnNext
-                                StateChange.Loading -> return@doOnNext
-                                is StateChange.PasswordChanged -> return@doOnNext
-                                is StateChange.PasswordError -> return@doOnNext
-                                StateChange.PasswordFirstChanged -> return@doOnNext
-                                is StateChange.RegisterFailed -> SingleEvent.RegisterError(it.throwable)
-                                StateChange.RegisterSuccess -> SingleEvent.RegisterSuccess
-                                is StateChange.UsernameChanged -> return@doOnNext
-                                is StateChange.UsernameError -> return@doOnNext
-                                StateChange.UsernameFirstChanged -> return@doOnNext
-                            }
-                            )
-                        }
-                }
         Observable.mergeArray(
-            intentS.ofType<ViewIntent.FirstnameFirstChanged>().doOnNext {
-                Timber.d("EVENT = $it")
-            }
-                .map { StateChange.FirstnameFirstChanged },
-            intentS.ofType<ViewIntent.LastnameFirstChanged>().doOnNext {
-                Timber.d("EVENT = $it")
-            }
-                .map { StateChange.LastnameFirstChanged },
-            intentS.ofType<ViewIntent.UsernameFirstChanged>().doOnNext {
-                Timber.d("EVENT = $it")
-            }
-                .map { StateChange.UsernameFirstChanged },
-            intentS.ofType<ViewIntent.PasswordFirstChanged>().doOnNext {
-                Timber.d("EVENT = $it")
-            }
+            intentS
+                .ofType<ViewIntent.FullnameFirstChanged>()
+                .map { StateChange.FullnameFirstChanged },
+            intentS
+                .ofType<ViewIntent.EmailFirstChanged>()
+                .map { StateChange.EmailFirstChanged },
+            intentS
+                .ofType<ViewIntent.PasswordFirstChanged>()
                 .map { StateChange.PasswordFirstChanged },
-            intentS.ofType<ViewIntent.ConfirmationPasswordFirstChanged>().doOnNext {
-                Timber.d("EVENT = $it")
-            }
+            intentS
+                .ofType<ViewIntent.ConfirmationPasswordFirstChanged>()
                 .map { StateChange.ConfirmationPasswordFirstChanged },
-            firstnameObservable.map { StateChange.FirstnameChanged(it.first) },
-            firstnameObservable.map { StateChange.FirstnameError(it.second) },
-            lastnameObservable.map { StateChange.LastnameChanged(it.first) },
-            lastnameObservable.map { StateChange.LastnameError(it.second) },
-            usernameObservable.map { StateChange.UsernameChanged(it.first) },
-            usernameObservable.map { StateChange.UsernameError(it.second) },
-            passwordObservable.map { StateChange.PasswordError(it.second) },
-            passwordObservable.map { StateChange.PasswordChanged(it.first) },
-            confirmationPasswordObservable.map { StateChange.ConfirmationPasswordChanged(it.first) },
-            confirmationPasswordObservable.map { StateChange.ConfirmationPasswordError(it.second) },
-            registerChanges,
+            fullNameObservable.map { StateChange.FullnameChanged(it.first) },
+            fullNameObservable.map { StateChange.FullnameError(it.second) },
+            emailObservable.map { StateChange.EmailChanged(it.first) },
+            emailObservable.map { StateChange.EmailError(it.second) },
+            passwordObservable.map { StateChange.PasswordChanged(it) },
+            confirmationPasswordObservable.map { StateChange.ConfirmationPasswordChanged(it) },
+            bothPasswordObservable.map { StateChange.PasswordError(it.first) },
+            bothPasswordObservable.map { StateChange.ConfirmationPasswordError(it.second) },
+            validationObservale.map { StateChange.FormValidationChanged(it) }
         ).observeOn(AndroidSchedulers.mainThread())
-            .scan(initialState) { state, change -> change.emit(state) }
-            .subscribe(stateS)
+            .scan(initialState) { state, change -> change.emit(state) }.subscribe(stateS)
     }
 
     private companion object {
-        val emptyFirstname = setOf(ValidationError.EMPTY_FIRSTNAME)
-        val emptyLastname = setOf(ValidationError.EMPTY_LASTNAME)
 
-        val tooShortUsername = setOf(ValidationError.TOO_SHORT_USERNAME)
-        val emptyUsername = setOf(ValidationError.EMPTY_USERNAME)
+        val emptyFullName = setOf(ValidationError.EMPTY_FULLNAME)
+        val emailInvalid = setOf(ValidationError.EMAIL_INVALID)
+        val emptyEmail = setOf(ValidationError.EMPTY_EMAIL)
         val emptyPassword = setOf(ValidationError.EMPTY_PASSWORD)
         val notMatchPassword = setOf(ValidationError.NOT_MATCH)
 
-        fun getUsernameErrors(username: String): Set<ValidationError> {
+        fun getEmailErrors(email: String): Set<ValidationError> {
             return when {
-                username.isBlank() -> emptyUsername
-                username.length <= 3 -> tooShortUsername
+                email.isBlank() -> emptyEmail
+                !email.isEmail() -> emailInvalid
                 else -> emptySet()
             }
         }
@@ -223,16 +148,10 @@ class RegisterViewModel @Inject constructor(
             }
         }
 
-        fun getFirstnameErrors(firstname: String): Set<ValidationError> {
-            return when {
-                firstname.isBlank() -> emptyFirstname
-                else -> emptySet()
-            }
-        }
 
-        fun getLastnameErrors(lastname: String): Set<ValidationError> {
+        fun getFullNameErrors(fullname: String): Set<ValidationError> {
             return when {
-                lastname.isBlank() -> emptyLastname
+                fullname.isBlank() -> emptyFullName
                 else -> emptySet()
             }
         }

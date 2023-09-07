@@ -36,14 +36,14 @@ internal interface DataModule {
 
     @Binds
     @Singleton
-    fun provideLocalUserDataSource(localUserDataSourceImpl: LocalUserDataSourceImpl) :LocalUserDataSource
+    fun provideLocalUserDataSource(localUserDataSourceImpl: LocalUserDataSourceImpl): LocalUserDataSource
 
 
-    companion object{
+    companion object {
 
         @Provides
         @GoodBlogUrl
-        internal fun goodClientUrl() : String = "http://10.0.2.2:8080/api/v1/"
+        internal fun goodClientUrl(): String = "https://very-good-blog-app.up.railway.app/"
 
         @Singleton
         @Provides

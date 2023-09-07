@@ -1,5 +1,6 @@
 package me.dungngminh.verygoodblogapp.features.authentication.login
 
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.Interactor
 import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.StateChange
@@ -95,7 +96,7 @@ class LoginInteractor @Inject constructor(private val authenticationRepository: 
             username = username,
             password = password
         )
-            .toObservable()
+            .toObservable<Completable>()
             .map<StateChange> { StateChange.LoginSuccess }
             .startWithItem(StateChange.Loading)
             .onErrorReturnItem(StateChange.LoginFailed)

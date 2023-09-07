@@ -19,7 +19,6 @@ class AuthInterceptor @Inject constructor(private val userLocalSource: LocalUser
       else -> {
         when (val token =
           runBlocking { userLocalSource.getJwt() }.also { Timber.d("Current token: $it") }) {
-          null -> request
           else -> request
             .newBuilder()
             .addHeader("Authorization", "Bearer $token")

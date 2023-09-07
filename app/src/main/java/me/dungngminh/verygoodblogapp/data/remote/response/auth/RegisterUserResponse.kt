@@ -1,4 +1,4 @@
-package me.dungngminh.verygoodblogapp.data.remote.response
+package me.dungngminh.verygoodblogapp.data.remote.response.auth
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

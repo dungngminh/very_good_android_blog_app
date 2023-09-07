@@ -30,70 +30,48 @@
             android:id="@+id/materialTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="Register"
             android:textFontWeight="700"
             android:textSize="34sp"
-            app:layout_constraintBottom_toTopOf="@+id/tilFirstname"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFirstname"
+            android:id="@+id/tilFullname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Firstname"
-            app:errorEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFirstname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilLastname"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Lastname"
+            android:layout_marginTop="24dp"
+            android:hint="Fullname"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:helperTextEnabled="true"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/tilFirstname">
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLastname"
+                android:id="@+id/etFullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilUsername"
+            android:id="@+id/tilEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Username"
+            android:hint="Email"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/tilLastname">
+            app:layout_constraintTop_toBottomOf="@+id/tilFullname">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -110,7 +88,7 @@
             app:errorIconDrawable="@null"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/tilUsername"
+            app:layout_constraintTop_toBottomOf="@+id/tilEmail"
             app:passwordToggleDrawable="@drawable/show_password_selector"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/md_theme_light_primary">

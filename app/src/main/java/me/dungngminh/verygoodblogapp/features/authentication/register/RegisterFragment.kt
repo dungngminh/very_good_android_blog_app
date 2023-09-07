@@ -1,7 +1,6 @@
 package me.dungngminh.verygoodblogapp.features.authentication.register
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,39 +48,28 @@ class RegisterFragment : BaseFragment() {
             binding.run {
                 Timber.d("State = $state")
 
-                when {
-                    ValidationError.EMPTY_FIRSTNAME in state.firstnameError -> {
-                        "Firstname must be not empty"
-                    }
-                    else -> null
-
-                }.let {
-                    if (tilFirstname.error != it && state.isFirstnameChanged)
-                        tilFirstname.error = it
-                }
-
-                when {
-                    ValidationError.EMPTY_LASTNAME in state.lastnameError -> {
-                        "Lastname must be not empty"
+                when (ValidationError.EMPTY_FULLNAME) {
+                    in state.fullNameError -> {
+                        "Full name must be not empty"
                     }
                     else -> null
                 }.let {
-                    if (tilLastname.error != it && state.isLastnameChanged) {
-                        tilLastname.error = it
+                    if (tilFullname.error != it && state.isLastnameChanged) {
+                        tilFullname.error = it
                     }
                 }
 
                 when {
-                    ValidationError.TOO_SHORT_USERNAME in state.usernameError -> {
-                        "Username is too short"
+                    ValidationError.EMAIL_INVALID in state.emailError -> {
+                        "Email is not valid"
                     }
-                    ValidationError.EMPTY_USERNAME in state.usernameError -> {
-                        "Username must be not empty"
+                    ValidationError.EMPTY_FULLNAME in state.emailError -> {
+                        "Email must be not empty"
                     }
                     else -> null
                 }.let {
-                    if (tilUsername.error != it && state.isUsernameChanged) {
-                        tilUsername.error = it
+                    if (tilEmail.error != it && state.isEmailFirstChanged) {
+                        tilEmail.error = it
                     }
                 }
 
@@ -99,8 +87,8 @@ class RegisterFragment : BaseFragment() {
                     }
                 }
 
-                when {
-                    ValidationError.NOT_MATCH in state.confirmationPasswordError -> {
+                when (ValidationError.NOT_MATCH) {
+                    in state.confirmationPasswordError -> {
                         "Password is not match"
                     }
                     else -> null
@@ -110,6 +98,9 @@ class RegisterFragment : BaseFragment() {
                     }
                 }
 
+                btnRegister.isCheckable = state.isValid
+                btnRegister.isEnabled = state.isValid
+
                 if (state.isLoading) {
                     progressBar.visibility = View.VISIBLE
                     btnRegister.visibility = View.GONE
@@ -117,6 +108,7 @@ class RegisterFragment : BaseFragment() {
                     progressBar.visibility = View.GONE
                     btnRegister.visibility = View.VISIBLE
                 }
+
             }
         }).addTo(startStopDisposable)
 
@@ -136,28 +128,23 @@ class RegisterFragment : BaseFragment() {
                 }
             }
         }.addTo(startStopDisposable)
+
     }
 
     private fun bindVM() {
         viewModel.processIntents(Observable.mergeArray(
-            binding.etFirstname
+            binding.etFullname
                 .textChanges()
-                .map { ViewIntent.FirstnameChanged(it.toString()) },
-            binding.etFirstname
+                .map { ViewIntent.FullnameChanged(it.toString()) },
+            binding.etFullname
                 .firstChange()
-                .map { ViewIntent.FirstnameFirstChanged },
-            binding.etLastname
+                .map { ViewIntent.FullnameFirstChanged },
+            binding.etEmail
                 .textChanges()
-                .map { ViewIntent.LastnameChanged(it.toString()) },
-            binding.etLastname
+                .map { ViewIntent.EmailChanged(it.toString()) },
+            binding.etEmail
                 .firstChange()
-                .map { ViewIntent.LastnameFirstChanged },
-            binding.etUsername
-                .textChanges()
-                .map { ViewIntent.UsernameChanged(it.toString()) },
-            binding.etUsername
-                .firstChange()
-                .map { ViewIntent.UsernameFirstChanged },
+                .map { ViewIntent.EmailFirstChanged },
             binding.etPassword
                 .textChanges()
                 .map { ViewIntent.PasswordChanged(it.toString()) },
@@ -179,9 +166,8 @@ class RegisterFragment : BaseFragment() {
         hideKeyboard()
 
         viewModel.state.let { state ->
-            binding.etFirstname.setText(state.firstname)
-            binding.etLastname.setText(state.lastname)
-            binding.etUsername.setText(state.username)
+            binding.etFullname.setText(state.fullName)
+            binding.etEmail.setText(state.email)
             binding.etPassword.setText(state.password)
             binding.etConfirmationPassword.setText(state.confirmationPassword)
 
