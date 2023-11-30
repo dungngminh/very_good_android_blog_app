@@ -1,6 +1,5 @@
 package me.dungngminh.verygoodblogapp.data.remote
 
-import io.reactivex.rxjava3.core.Single
 import me.dungngminh.verygoodblogapp.data.remote.body.LoginUserBody
 import me.dungngminh.verygoodblogapp.data.remote.body.RegisterUserBody
 import me.dungngminh.verygoodblogapp.data.remote.response.auth.BaseResponse
@@ -16,11 +15,11 @@ interface ApiService {
 
     @Headers("@: NoAuth")
     @POST("api/auth/login")
-    fun login(@Body loginUserBody: LoginUserBody): Single<BaseResponse<LoginUserResponse>>
+    suspend fun login(@Body body: LoginUserBody): BaseResponse<LoginUserResponse>
 
     @Headers("@: NoAuth")
     @POST("api/auth/register")
-    fun register(@Body registerUserBody: RegisterUserBody): Single<BaseResponse<Any>>
+    fun register(@Body body: RegisterUserBody): BaseResponse<Any>
 
     companion object Factory{
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()

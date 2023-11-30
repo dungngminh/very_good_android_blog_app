@@ -51,10 +51,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Login"
-                android:textFontWeight="700"
+                android:text="@string/generic_login"
+                android:textAppearance="@style/TextAppearance.Material3.DisplaySmall"
+                android:textFontWeight="600"
                 android:textSize="34sp"
-                app:layout_constraintBottom_toTopOf="@+id/usernameLayout"
+                app:layout_constraintBottom_toTopOf="@+id/emailLayout"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -62,11 +63,11 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/usernameLayout"
+                android:id="@+id/emailLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="96dp"
-                android:hint="Username"
+                android:hint="@string/generic_email"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:hintAnimationEnabled="true"
@@ -77,7 +78,7 @@
                 app:passwordToggleTint="#673AB7">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_username"
+                    android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -97,7 +98,7 @@
                 app:hintEnabled="true"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/usernameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/emailLayout"
                 app:passwordToggleDrawable="@drawable/show_password_selector"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/md_theme_light_primary">
@@ -106,8 +107,8 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:minHeight="48dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -115,7 +116,7 @@
                 android:id="@+id/tv_forgot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Forgot Password?"
+                android:text="@string/login_forgot_password_label"
                 android:textFontWeight="600"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -144,40 +145,52 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/tv_forgot" />
 
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="5dp"
                 android:paddingEnd="4dp"
-                android:text="Don’t have an account?"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/login_dont_have_an_acount_label_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 app:layout_constraintEnd_toStartOf="@+id/tv_sign_up"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar"
-                app:layout_constraintVertical_bias="1.0" />
+                tools:layout_editor_absoluteY="538dp" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:layout_marginStart="4dp"
                 android:id="@+id/tv_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
                 android:clickable="true"
-                android:minHeight="24dp"
-                android:text="Sign up"
+                android:text="@string/generic_sign_up"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="@color/md_theme_light_primary"
                 android:textFontWeight="700"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/btn_login"
-                app:layout_constraintVertical_bias="1.0"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:layout_constraintTop_toTopOf="@+id/textView4"
+                tools:ignore="TouchTargetSizeCheck"
+                android:focusable="true" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
+
+
 
 </ScrollView>

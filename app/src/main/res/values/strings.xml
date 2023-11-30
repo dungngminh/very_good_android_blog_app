@@ -2,5 +2,19 @@
     <string name="app_name">Very Good Blog App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generic_login">Login</string>
+    <string name="generic_username">Username</string>
+    <string name="login_dont_have_an_acount_label_text">Don’t have an account?</string>
+    <string name="generic_sign_up">Sign up</string>
+    <string name="login_forgot_password_label">Forgot Password?</string>
+    <string name="generic_fullname">Fullname</string>
+    <string name="generic_register">Register</string>
+    <string name="generic_email">Email</string>
+    <string name="generic_password">Password</string>
+    <string name="generic_confirmation_password">Confirmation Password</string>
+    <string name="email_must_be_not_empty">Email must be not empty</string>
+    <string name="email_is_not_valid">Email is not valid</string>
+    <string name="password_must_be_not_empty">Password must be not empty</string>
+    <string name="password_must_be_more_than_8_characters_long">Password must be more than 8 characters long</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

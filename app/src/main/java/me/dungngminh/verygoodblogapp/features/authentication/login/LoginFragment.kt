@@ -5,21 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.jakewharton.rxbinding4.view.clicks
-import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.kotlin.addTo
-import io.reactivex.rxjava3.kotlin.subscribeBy
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
+import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginContract.*
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
-import me.dungngminh.verygoodblogapp.utils.firstChange
-import me.dungngminh.verygoodblogapp.utils.hideKeyboard
+import me.dungngminh.verygoodblogapp.utils.LoadingStatus
+import me.dungngminh.verygoodblogapp.utils.onDone
 import me.dungngminh.verygoodblogapp.utils.snack
+import reactivecircus.flowbinding.android.view.clicks
+import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -43,97 +52,111 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         bindViewModel()
-
+        collectState()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.stateObservable.subscribeBy(onNext = { state ->
-            binding.run {
-                Timber.d("State = $state")
-                when {
-                    ValidationError.TOO_SHORT_USERNAME in state.usernameError -> {
-                        "Username is too short"
-                    }
-                    ValidationError.EMPTY_USERNAME in state.usernameError -> {
-                        "Username must be not empty"
-                    }
-                    else -> null
-                }
-                    .let {
-                        if (usernameLayout.error != it && state.isUsernameChanged) usernameLayout.error =
-                            it
-                    }
-                when (ValidationError.EMPTY_PASSWORD) {
-                    in state.passwordError -> {
-                        "Password must be not empty"
-                    }
-                    else -> {
-                        null
-                    }
-                }.let { message ->
-                    if (passwordLayout.error != message && state.isPasswordChanged) passwordLayout.error =
-                        message
-                }
-                if (state.isLoading) {
-                    progressBar.visibility = View.VISIBLE
-                    btnLogin.visibility = View.GONE
-                } else {
-                    progressBar.visibility = View.GONE
-                    btnLogin.visibility = View.VISIBLE
-                }
+    private fun bindViewModel() {
+        binding.etEmail
+            .textChanges()
+            .onEach {
+                viewModel.changeEmail(it.toString())
             }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
-        }).addTo(startStopDisposable)
-
-        viewModel.eventObservable.subscribeBy(onNext = { singleEvent ->
-            Timber.d("State = $singleEvent")
-            when (singleEvent) {
-                SingleEvent.LoginSuccess -> {
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    requireActivity().finish()
-                }
-                is SingleEvent.LoginFailed -> {
-                    view?.snack("Login Failed")
-                }
+        binding.etPassword
+            .textChanges()
+            .onEach {
+                viewModel.changePassword(it.toString())
             }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
-        }).addTo(startStopDisposable)
-    }
-
-   private fun bindViewModel() {
-        viewModel.processIntents(Observable.mergeArray(
-            binding.etUsername.textChanges()
-                .map { ViewIntent.UsernameChanged(it.toString()) },
-            binding.etUsername.firstChange()
-                .map { ViewIntent.UsernameFirstChanged },
-            binding.etPassword.textChanges()
-                .map { ViewIntent.PasswordChanged(it.toString()) },
-            binding.etPassword.firstChange()
-                .map { ViewIntent.PasswordFirstChanged },
-            binding.btnLogin.clicks()
-                .map { ViewIntent.LoginSubmitted },
-        ))
-            .addTo(compositeDisposable)
+        binding.btnLogin
+            .clicks()
+            .onEach {
+                viewModel.requestLogin()
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun setupViews() {
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
         }
-        hideKeyboard()
 
-        viewModel.state.let { state ->
-            binding.etUsername.setText(state.username)
-            binding.etPassword.setText(state.password)
-        }
+        binding.etPassword.onDone { clearFocus() }
+    }
 
+    private fun collectState() {
+
+        viewModel.state
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                // UI State
+                binding.run {
+                    Timber.d("State = $state")
+                    when (state.emailValidationError) {
+                        LoginState.ValidationError.EMPTY -> {
+                            getString(R.string.email_must_be_not_empty)
+                        }
+
+                        LoginState.ValidationError.INVALID -> {
+                            getString(R.string.email_is_not_valid)
+                        }
+
+                        else -> null
+                    }
+                        .let {
+                            if (state.isEmailFirstChanged) emailLayout.error =
+                                it
+                        }
+                    when (state.passwordValidationError) {
+                        LoginState.ValidationError.EMPTY -> {
+                            getString(R.string.password_must_be_not_empty)
+                        }
+
+                        LoginState.ValidationError.TOO_SHORT -> {
+                            getString(R.string.password_must_be_more_than_8_characters_long)
+                        }
+
+                        else -> null
+                    }.let { message ->
+                        if (state.isPasswordFirstChanged) passwordLayout.error =
+                            message
+                    }
+
+                    if (state.loadingStatus == LoadingStatus.LOADING) {
+                        progressBar.visibility = View.VISIBLE
+                        btnLogin.visibility = View.GONE
+                    } else {
+                        progressBar.visibility = View.GONE
+                        btnLogin.visibility = View.VISIBLE
+                    }
+
+                    btnLogin.isEnabled =
+                        state.emailValidationError == null && state.passwordValidationError == null
+                }
+
+                // UI Event
+                when (state.loadingStatus) {
+                    LoadingStatus.DONE -> {
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    LoadingStatus.ERROR -> {
+                        requireView().snack(
+                            state.error?.message ?: "Something went wrong! Please try again"
+                        )
+                        viewModel.errorMessageShown()
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

@@ -13,12 +13,12 @@ class AuthInterceptor @Inject constructor(private val userLocalSource: LocalUser
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request()
 
-    val customHeaders = request.headers().values("@")
+    val customHeaders = request.headers.values("@")
     val newRequest = when {
       "NoAuth" in customHeaders -> request
       else -> {
         when (val token =
-          runBlocking { userLocalSource.getJwt() }.also { Timber.d("Current token: $it") }) {
+          runBlocking { userLocalSource.jwt }.also { Timber.d("Current token: $it") }) {
           else -> request
             .newBuilder()
             .addHeader("Authorization", "Bearer $token")
@@ -32,7 +32,7 @@ class AuthInterceptor @Inject constructor(private val userLocalSource: LocalUser
       .build()
       .let(chain::proceed)
 
-    if (response.code() in arrayOf(HTTP_UNAUTHORIZED, HTTP_FORBIDDEN)) {
+    if (response.code in arrayOf(HTTP_UNAUTHORIZED, HTTP_FORBIDDEN)) {
       runBlocking { userLocalSource.deleteAll() }
       Timber.d("Response code is 401 or 404. Removed token. Logout")
     }

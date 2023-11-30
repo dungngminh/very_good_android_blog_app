@@ -3,15 +3,10 @@ package me.dungngminh.verygoodblogapp.core
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import timber.log.Timber
 
-open class BaseFragment() : Fragment() {
-    protected val compositeDisposable = CompositeDisposable()
-
-    protected val startStopDisposable = CompositeDisposable()
+open class BaseFragment : Fragment() {
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +22,11 @@ open class BaseFragment() : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        startStopDisposable.clear()
     }
+
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.clear()
         Timber.d("$this::onDestroyView")
     }
 
@@ -41,4 +35,8 @@ open class BaseFragment() : Fragment() {
         super.onDestroy()
         Timber.d("$this::onDestroy")
     }
+}
+
+fun Fragment.clearFocus() {
+    activity?.currentFocus?.clearFocus()
 }

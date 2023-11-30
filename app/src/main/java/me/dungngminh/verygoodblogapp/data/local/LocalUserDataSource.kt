@@ -1,14 +1,32 @@
 package me.dungngminh.verygoodblogapp.data.local
 
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
+import android.content.SharedPreferences
+import androidx.core.content.edit
+import javax.inject.Inject
 
-interface LocalUserDataSource {
-    fun getJwt() : Observable<String>
+class LocalUserDataSource @Inject constructor(private val pref: SharedPreferences) {
 
-    fun getUserId(): Observable<String>
+    private companion object {
+        private const val JWT_KEY = "JWT"
+        private const val USERID_KEY = "USERID"
 
-    fun saveTokenAndId(jwt: String, userId: String) : Completable
+    }
 
-    fun deleteAll() : Completable
+    var jwt: String?
+        get() = pref.getString(JWT_KEY, null)
+        set(value) {
+            pref.edit { putString(JWT_KEY, value) }
+        }
+
+    var userId: String?
+        get() = pref.getString(USERID_KEY, null)
+        set(value) {
+            pref.edit { putString(USERID_KEY, value) }
+        }
+
+    fun deleteAll() {
+        pref.edit {
+            clear()
+        }
+    }
 }

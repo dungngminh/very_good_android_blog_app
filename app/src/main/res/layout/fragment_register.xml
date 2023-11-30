@@ -30,8 +30,9 @@
             android:id="@+id/materialTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:textFontWeight="700"
+            android:text="@string/generic_register"
+            android:textAppearance="@style/TextAppearance.Material3.DisplaySmall"
+            android:textFontWeight="600"
             android:textSize="34sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintHorizontal_bias="0.0"
@@ -43,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:hint="Fullname"
+            android:hint="@string/generic_fullname"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:helperTextEnabled="true"
@@ -54,6 +55,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFullname"
                 android:layout_width="match_parent"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Email"
+            android:hint="@string/generic_email"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -73,6 +76,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -83,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:hint="Password"
+            android:hint="@string/generic_password"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -97,6 +102,8 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -106,7 +113,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:hint="Confirmation Password"
+            android:hint="@string/generic_confirmation_password"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -120,6 +127,8 @@
                 android:id="@+id/etConfirmationPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -128,16 +137,17 @@
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/btnRegister"
             app:layout_constraintStart_toStartOf="@+id/btnRegister"
-            app:layout_constraintTop_toTopOf="@+id/btnRegister" />
+            app:layout_constraintTop_toBottomOf="@+id/tilConfirmationPassword" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
-            android:text="Register"
+            android:text="@string/generic_register"
             android:textAllCaps="false"
             android:textFontWeight="700"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
