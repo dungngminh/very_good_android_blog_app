@@ -22,10 +22,6 @@ open class BaseFragment : Fragment() {
         Timber.d("$this::onViewCreated: $view, $savedInstanceState")
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()

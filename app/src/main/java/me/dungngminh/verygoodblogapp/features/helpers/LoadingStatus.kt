@@ -1,4 +1,4 @@
-package me.dungngminh.verygoodblogapp.utils
+package me.dungngminh.verygoodblogapp.features.helpers
 
 enum class LoadingStatus {
     INITIAL,

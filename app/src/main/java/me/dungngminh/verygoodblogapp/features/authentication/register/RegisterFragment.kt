@@ -5,16 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
+import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentRegisterBinding
+import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
+import me.dungngminh.verygoodblogapp.utils.onDone
+import me.dungngminh.verygoodblogapp.utils.snack
+import reactivecircus.flowbinding.android.view.clicks
+import reactivecircus.flowbinding.android.widget.textChanges
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterFragment : BaseFragment() {
     private var _binding: FragmentRegisterBinding? = null
 
     private val viewModel by viewModels<RegisterViewModel>()
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -31,138 +43,137 @@ class RegisterFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-//        setupViews()
-//        bindVM()
+        setupViews()
+        collectState()
     }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        viewModel.stateObservable.subscribeBy(onNext = { state ->
-//            binding.run {
-//                Timber.d("State = $state")
-//
-//                when (ValidationError.EMPTY_FULLNAME) {
-//                    in state.fullNameError -> {
-//                        "Full name must be not empty"
-//                    }
-//                    else -> null
-//                }.let {
-//                    if (tilFullname.error != it && state.isLastnameChanged) {
-//                        tilFullname.error = it
-//                    }
-//                }
-//
-//                when {
-//                    ValidationError.EMAIL_INVALID in state.emailError -> {
-//                        "Email is not valid"
-//                    }
-//                    ValidationError.EMPTY_FULLNAME in state.emailError -> {
-//                        "Email must be not empty"
-//                    }
-//                    else -> null
-//                }.let {
-//                    if (tilEmail.error != it && state.isEmailFirstChanged) {
-//                        tilEmail.error = it
-//                    }
-//                }
-//
-//                when {
-//                    ValidationError.TOO_SHORT_PASSWORD in state.passwordError -> {
-//                        "Password is too short"
-//                    }
-//                    ValidationError.EMPTY_PASSWORD in state.passwordError -> {
-//                        "Password must be not empty"
-//                    }
-//                    else -> null
-//                }.let {
-//                    if (tilPassword.error != it && state.isPasswordChanged) {
-//                        tilPassword.error = it
-//                    }
-//                }
-//
-//                when (ValidationError.NOT_MATCH) {
-//                    in state.confirmationPasswordError -> {
-//                        "Password is not match"
-//                    }
-//                    else -> null
-//                }.let {
-//                    if (tilConfirmationPassword.error != it && state.isConfirmationPasswordChanged) {
-//                        tilConfirmationPassword.error = it
-//                    }
-//                }
-//
-//                btnRegister.isCheckable = state.isValid
-//                btnRegister.isEnabled = state.isValid
-//
-//                if (state.isLoading) {
-//                    progressBar.visibility = View.VISIBLE
-//                    btnRegister.visibility = View.GONE
-//                } else {
-//                    progressBar.visibility = View.GONE
-//                    btnRegister.visibility = View.VISIBLE
-//                }
-//
-//            }
-//        }).addTo(startStopDisposable)
-//
-//        viewModel.eventObservable.subscribeBy { singleEvent ->
-//            Timber.d("State =$singleEvent")
-//            when (singleEvent) {
-//                SingleEvent.RegisterSuccess -> {
-//                    view?.snack("Register Successfully")
-//                    RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-//                        .let {
-//                            findNavController()
-//                                .navigate(it)
-//                        }
-//                }
-//                is SingleEvent.RegisterError -> {
-//                    view?.snack("Register Failed")
-//                }
-//            }
-//        }.addTo(startStopDisposable)
-//
-//    }
-//
-//    private fun bindVM() {
-//        viewModel.processIntents(Observable.mergeArray(
-//            binding.etFullname
-//                .textChanges()
-//                .map { ViewIntent.FullnameChanged(it.toString()) },
-//            binding.etFullname
-//                .firstChange()
-//                .map { ViewIntent.FullnameFirstChanged },
-//            binding.etEmail
-//                .textChanges()
-//                .map { ViewIntent.EmailChanged(it.toString()) },
-//            binding.etEmail
-//                .firstChange()
-//                .map { ViewIntent.EmailFirstChanged },
-//            binding.etPassword
-//                .textChanges()
-//                .map { ViewIntent.PasswordChanged(it.toString()) },
-//            binding.etPassword
-//                .firstChange()
-//                .map { ViewIntent.PasswordFirstChanged },
-//            binding.etConfirmationPassword
-//                .textChanges()
-//                .map { ViewIntent.ConfirmationPasswordChanged(it.toString()) },
-//            binding.etConfirmationPassword
-//                .firstChange()
-//                .map { ViewIntent.ConfirmationPasswordFirstChanged },
-//            binding.btnRegister
-//                .clicks().map { ViewIntent.RegisterSubmitted },
-//        )).addTo(compositeDisposable)
-//    }
-//
-//    private fun setupViews() {
-//        viewModel.state.let { state ->
-//            binding.etFullname.setText(state.fullName)
-//            binding.etEmail.setText(state.email)
-//            binding.etPassword.setText(state.password)
-//            binding.etConfirmationPassword.setText(state.confirmationPassword)
-//        }
-//    }
+
+    override fun onStart() {
+        super.onStart()
+        bindViewModel()
+    }
+
+    private fun setupViews() {
+        binding.etConfirmationPassword.onDone { clearFocus() }
+    }
+
+    private fun collectState() {
+        viewModel
+            .state
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                // UI State
+                binding.run {
+                    Timber.d("State = $state")
+
+                    when (state.fullNameValidationError) {
+                        RegisterState.ValidationError.EMPTY -> getString(R.string.fullname_must_be_not_empty)
+                        else -> null
+                    }.let {
+                        if (state.isFullNameFirstChanged) {
+                            tilFullname.error = it
+                        }
+                    }
+
+                    when (state.emailValidationError) {
+                        RegisterState.ValidationError.EMPTY ->
+                            getString(R.string.email_must_be_not_empty)
+
+                        RegisterState.ValidationError.INVALID ->
+                            getString(R.string.email_is_not_valid)
+
+                        else -> null
+                    }.let { message ->
+                        if (state.isEmailFirstChanged) {
+                            tilEmail.error = message
+                        }
+                    }
+
+                    when (state.passwordValidationError) {
+                        RegisterState.ValidationError.EMPTY -> getString(R.string.password_must_be_not_empty)
+
+                        RegisterState.ValidationError.TOO_SHORT -> getString(R.string.password_must_be_more_than_8_characters_long)
+
+                        else -> null
+                    }.let { message ->
+                        if (state.isPasswordFirstChanged) {
+                            tilPassword.error = message
+                        }
+                    }
+
+                    when (state.confirmationPasswordValidationError) {
+                        RegisterState.ValidationError.NOT_MATCH -> getString(R.string.password_is_not_match)
+                        else -> null
+                    }.let { message ->
+                        if (state.isConfirmationPasswordFirstChanged) {
+                            tilConfirmationPassword.error = message
+                        }
+                    }
+
+                    if (state.loadingStatus == LoadingStatus.LOADING) {
+                        progressBar.visibility = View.VISIBLE
+                        btnRegister.visibility = View.GONE
+                    } else {
+                        progressBar.visibility = View.GONE
+                        btnRegister.visibility = View.VISIBLE
+                    }
+
+                    btnRegister.isEnabled = listOfNotNull(
+                        state.emailValidationError,
+                        state.fullNameValidationError,
+                        state.passwordValidationError,
+                        state.confirmationPasswordValidationError
+                    ).isEmpty()
+                }
+
+                // UI Event
+                when (state.loadingStatus) {
+                    LoadingStatus.DONE -> {
+                        findNavController().popBackStack()
+                    }
+
+                    LoadingStatus.ERROR -> {
+                        requireView().snack(
+                            state.error?.message ?: "Something went wrong! Please try again",
+                        )
+                        viewModel.errorMessageShown()
+                    }
+
+                    else -> {}
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun bindViewModel() {
+        binding.etFullname
+            .textChanges()
+            .skipInitialValue()
+            .onEach { viewModel.changeFullName(it.toString()) }
+            .launchIn(lifecycleScope)
+
+        binding.etEmail
+            .textChanges()
+            .skipInitialValue()
+            .onEach { viewModel.changeEmail(it.toString()) }
+            .launchIn(lifecycleScope)
+
+        binding.etPassword
+            .textChanges()
+            .skipInitialValue()
+            .onEach { viewModel.changePassword(it.toString()) }
+            .launchIn(lifecycleScope)
+
+        binding.etConfirmationPassword
+            .textChanges()
+            .skipInitialValue()
+            .onEach { viewModel.changeConfirmationPassword(it.toString()) }
+            .launchIn(lifecycleScope)
+
+        binding.btnRegister
+            .clicks()
+            .onEach { viewModel.requestRegister() }
+            .launchIn(lifecycleScope)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

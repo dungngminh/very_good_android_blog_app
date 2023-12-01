@@ -91,6 +91,7 @@
                 android:id="@+id/passwordLayout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:hint="Password"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"

@@ -16,5 +16,9 @@
     <string name="email_is_not_valid">Email is not valid</string>
     <string name="password_must_be_not_empty">Password must be not empty</string>
     <string name="password_must_be_more_than_8_characters_long">Password must be more than 8 characters long</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="hello_user">Hello %s</string>
+    <string name="fullname_must_be_not_empty">Fullname must be not empty</string>
+    <string name="password_is_not_match">Password is not match</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

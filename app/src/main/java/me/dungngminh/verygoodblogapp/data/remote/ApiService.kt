@@ -21,7 +21,7 @@ interface ApiService {
     @POST("api/auth/register")
     fun register(
         @Body body: RegisterUserBody,
-    ): BaseResponse<Any>
+    )
 
     companion object Factory {
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()

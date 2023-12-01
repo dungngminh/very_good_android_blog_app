@@ -17,7 +17,7 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
-import me.dungngminh.verygoodblogapp.utils.LoadingStatus
+import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
 import me.dungngminh.verygoodblogapp.utils.onDone
 import me.dungngminh.verygoodblogapp.utils.snack
 import reactivecircus.flowbinding.android.view.clicks
@@ -26,11 +26,12 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-    private val viewModel by viewModels<LoginViewModel>()
 
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +48,12 @@ class LoginFragment : BaseFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        bindViewModel()
         collectState()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindViewModel()
     }
 
     private fun bindViewModel() {
@@ -56,18 +61,18 @@ class LoginFragment : BaseFragment() {
             .textChanges()
             .skipInitialValue()
             .onEach { viewModel.changeEmail(it.toString()) }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchIn(lifecycleScope)
 
         binding.etPassword
             .textChanges()
             .skipInitialValue()
             .onEach { viewModel.changePassword(it.toString()) }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchIn(lifecycleScope)
 
         binding.btnLogin
             .clicks()
             .onEach { viewModel.requestLogin() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchIn(lifecycleScope)
     }
 
     private fun setupViews() {
@@ -86,13 +91,9 @@ class LoginFragment : BaseFragment() {
                 binding.run {
                     Timber.d("State = $state")
                     when (state.emailValidationError) {
-                        LoginState.ValidationError.EMPTY -> {
-                            getString(R.string.email_must_be_not_empty)
-                        }
+                        LoginState.ValidationError.EMPTY -> getString(R.string.email_must_be_not_empty)
 
-                        LoginState.ValidationError.INVALID -> {
-                            getString(R.string.email_is_not_valid)
-                        }
+                        LoginState.ValidationError.INVALID -> getString(R.string.email_is_not_valid)
 
                         else -> null
                     }.let { message ->
@@ -100,14 +101,11 @@ class LoginFragment : BaseFragment() {
                             emailLayout.error = message
                         }
                     }
-                    when (state.passwordValidationError) {
-                        LoginState.ValidationError.EMPTY -> {
-                            getString(R.string.password_must_be_not_empty)
-                        }
 
-                        LoginState.ValidationError.TOO_SHORT -> {
-                            getString(R.string.password_must_be_more_than_8_characters_long)
-                        }
+                    when (state.passwordValidationError) {
+                        LoginState.ValidationError.EMPTY -> getString(R.string.password_must_be_not_empty)
+
+                        LoginState.ValidationError.TOO_SHORT -> getString(R.string.password_must_be_more_than_8_characters_long)
 
                         else -> null
                     }.let { message ->
