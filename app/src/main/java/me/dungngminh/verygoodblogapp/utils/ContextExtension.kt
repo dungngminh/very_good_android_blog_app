@@ -6,7 +6,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
-
 fun Fragment.hideKeyboard() {
     activity?.hideKeyboard(view ?: return)
 }

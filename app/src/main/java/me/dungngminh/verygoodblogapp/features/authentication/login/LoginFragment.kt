@@ -5,20 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
@@ -33,7 +26,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-
     private val viewModel by viewModels<LoginViewModel>()
 
     private var _binding: FragmentLoginBinding? = null
@@ -41,14 +33,18 @@ class LoginFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         bindViewModel()
@@ -58,23 +54,19 @@ class LoginFragment : BaseFragment() {
     private fun bindViewModel() {
         binding.etEmail
             .textChanges()
-            .onEach {
-                viewModel.changeEmail(it.toString())
-            }
+            .skipInitialValue()
+            .onEach { viewModel.changeEmail(it.toString()) }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.etPassword
             .textChanges()
-            .onEach {
-                viewModel.changePassword(it.toString())
-            }
+            .skipInitialValue()
+            .onEach { viewModel.changePassword(it.toString()) }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.btnLogin
             .clicks()
-            .onEach {
-                viewModel.requestLogin()
-            }
+            .onEach { viewModel.requestLogin() }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -87,7 +79,6 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun collectState() {
-
         viewModel.state
             .flowWithLifecycle(lifecycle)
             .onEach { state ->
@@ -104,11 +95,11 @@ class LoginFragment : BaseFragment() {
                         }
 
                         else -> null
-                    }
-                        .let {
-                            if (state.isEmailFirstChanged) emailLayout.error =
-                                it
+                    }.let { message ->
+                        if (state.isEmailFirstChanged) {
+                            emailLayout.error = message
                         }
+                    }
                     when (state.passwordValidationError) {
                         LoginState.ValidationError.EMPTY -> {
                             getString(R.string.password_must_be_not_empty)
@@ -120,8 +111,9 @@ class LoginFragment : BaseFragment() {
 
                         else -> null
                     }.let { message ->
-                        if (state.isPasswordFirstChanged) passwordLayout.error =
-                            message
+                        if (state.isPasswordFirstChanged) {
+                            passwordLayout.error = message
+                        }
                     }
 
                     if (state.loadingStatus == LoadingStatus.LOADING) {
@@ -141,11 +133,12 @@ class LoginFragment : BaseFragment() {
                     LoadingStatus.DONE -> {
                         val intent = Intent(requireActivity(), MainActivity::class.java)
                         startActivity(intent)
+                        requireActivity().finish()
                     }
 
                     LoadingStatus.ERROR -> {
                         requireView().snack(
-                            state.error?.message ?: "Something went wrong! Please try again"
+                            state.error?.message ?: "Something went wrong! Please try again",
                         )
                         viewModel.errorMessageShown()
                     }

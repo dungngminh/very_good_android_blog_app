@@ -6,11 +6,12 @@ import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository,
-) : BaseViewModel() {
-
-//    private val initialState = RegisterState()
+class RegisterViewModel
+    @Inject
+    constructor(
+        private val authenticationRepository: AuthenticationRepository,
+    ) : BaseViewModel() {
+        //    private val initialState = RegisterState()
 //    private val registerStateSubject = BehaviorSubject.create<RegisterState>()
 //
 //    private val intentS = PublishRelay.create<ViewIntent>()
@@ -130,4 +131,4 @@ class RegisterViewModel @Inject constructor(
 //            }
 //        }
 //    }
-}
+    }

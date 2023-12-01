@@ -10,18 +10,20 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-
 interface ApiService {
-
     @Headers("@: NoAuth")
     @POST("api/auth/login")
-    suspend fun login(@Body body: LoginUserBody): BaseResponse<LoginUserResponse>
+    suspend fun login(
+        @Body body: LoginUserBody,
+    ): BaseResponse<LoginUserResponse>
 
     @Headers("@: NoAuth")
     @POST("api/auth/register")
-    fun register(@Body body: RegisterUserBody): BaseResponse<Any>
+    fun register(
+        @Body body: RegisterUserBody,
+    ): BaseResponse<Any>
 
-    companion object Factory{
+    companion object Factory {
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()
     }
 }

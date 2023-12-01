@@ -31,7 +31,7 @@ android {
             buildConfigField("String", "BASE_URL", "${properties["BASE_URL"]}")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -60,13 +60,12 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //Retrofit
+    // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-
-    //Moshi
+    // Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.moshi:moshi-adapters:1.9.2")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
@@ -75,15 +74,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    //Fragment KTX
+    // Fragment KTX
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
-
-    //Navigation
+    // Navigation
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
-
 
 //    View Model + Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-rc01")

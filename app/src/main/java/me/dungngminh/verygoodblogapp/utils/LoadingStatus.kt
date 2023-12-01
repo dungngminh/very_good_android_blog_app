@@ -7,5 +7,5 @@ enum class LoadingStatus {
 
     DONE,
 
-    ERROR
+    ERROR,
 }

@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import timber.log.Timber
 
 open class BaseFragment : Fragment() {
-
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,7 +14,10 @@ open class BaseFragment : Fragment() {
     }
 
     @CallSuper
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("$this::onViewCreated: $view, $savedInstanceState")
     }

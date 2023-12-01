@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Binds
-import javax.inject.Qualifier
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,26 +22,25 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
-
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 internal annotation class GoodBlogUrl
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-
     @Provides
     @GoodBlogUrl
     fun goodClientUrl(): String = BuildConfig.BASE_URL
 
     @Provides
     @Singleton
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    fun provideSharedPreference(
+        @ApplicationContext context: Context,
+    ): SharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
@@ -53,17 +50,16 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi = Moshi
-        .Builder()
-        .add(KotlinJsonAdapterFactory())
-        .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
-        .build()
+    fun provideMoshi(): Moshi =
+        Moshi
+            .Builder()
+            .add(KotlinJsonAdapterFactory())
+            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .build()
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
-        authInterceptor: AuthInterceptor,
-    ): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
         return OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -80,11 +76,12 @@ object DataModule {
         @GoodBlogUrl baseUrl: String,
         moshi: Moshi,
         client: OkHttpClient,
-    ): Retrofit = Retrofit.Builder()
-        .client(client)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .baseUrl(baseUrl)
-        .build()
+    ): Retrofit =
+        Retrofit.Builder()
+            .client(client)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(baseUrl)
+            .build()
 
     @Provides
     @Singleton
@@ -100,7 +97,7 @@ object DataModule {
         return AuthenticationRepository(
             apiService = apiService,
             localDataSource = localUserDataSource,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = ioDispatcher,
         )
     }
 }

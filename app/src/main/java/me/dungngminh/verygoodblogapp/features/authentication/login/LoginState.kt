@@ -14,21 +14,22 @@ data class LoginState(
 ) {
     companion object {
         @JvmStatic
-        val initial = LoginState(
-            email = "",
-            isEmailFirstChanged = false,
-            password = "",
-            isPasswordFirstChanged = false,
-            loadingStatus = LoadingStatus.INITIAL,
-            error = null,
-            emailValidationError = null,
-            passwordValidationError = null,
-        )
+        val initial =
+            LoginState(
+                email = "",
+                isEmailFirstChanged = false,
+                password = "",
+                isPasswordFirstChanged = false,
+                loadingStatus = LoadingStatus.INITIAL,
+                error = null,
+                emailValidationError = null,
+                passwordValidationError = null,
+            )
     }
 
     enum class ValidationError {
         INVALID,
         EMPTY,
-        TOO_SHORT
+        TOO_SHORT,
     }
 }

@@ -8,7 +8,7 @@ enum class SnackbarLength(val rawValue: Int) {
 
     LONG(Snackbar.LENGTH_LONG),
 
-    INDEFINITE(Snackbar.LENGTH_INDEFINITE);
+    INDEFINITE(Snackbar.LENGTH_INDEFINITE),
 }
 
 inline fun View.snack(

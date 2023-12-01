@@ -9,19 +9,24 @@ import me.dungngminh.verygoodblogapp.data.remote.body.RegisterUserBody
 import me.dungngminh.verygoodblogapp.di.IoDispatcher
 import javax.inject.Inject
 
-class AuthenticationRepository @Inject constructor(
+class AuthenticationRepository
+@Inject
+constructor(
     private val apiService: ApiService,
     private val localDataSource: LocalUserDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
-
-    suspend fun login(email: String, password: String) {
+    suspend fun login(
+        email: String,
+        password: String,
+    ) {
         withContext(ioDispatcher) {
             apiService.login(
-                body = LoginUserBody(
+                body =
+                LoginUserBody(
                     email = email,
-                    password = password
-                )
+                    password = password,
+                ),
             ).also {
                 val data = it.unwrap()
                 localDataSource.run {
@@ -40,13 +45,18 @@ class AuthenticationRepository @Inject constructor(
     ) {
         withContext(ioDispatcher) {
             apiService.register(
-                body = RegisterUserBody(
+                body =
+                RegisterUserBody(
                     email = email,
                     password = password,
                     confirmationPassword = confirmationPassword,
-                    fullName = fullName
-                )
+                    fullName = fullName,
+                ),
             )
         }
+    }
+
+    fun checkAuth(): Boolean {
+        return localDataSource.jwt != null && localDataSource.userId != null
     }
 }
