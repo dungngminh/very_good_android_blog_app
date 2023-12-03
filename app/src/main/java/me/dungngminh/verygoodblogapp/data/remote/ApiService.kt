@@ -1,9 +1,9 @@
 package me.dungngminh.verygoodblogapp.data.remote
 
-import me.dungngminh.verygoodblogapp.data.remote.body.LoginUserBody
-import me.dungngminh.verygoodblogapp.data.remote.body.RegisterUserBody
-import me.dungngminh.verygoodblogapp.data.remote.response.auth.BaseResponse
-import me.dungngminh.verygoodblogapp.data.remote.response.auth.LoginUserResponse
+import me.dungngminh.verygoodblogapp.data.remote.model.body.LoginUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.RegisterUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.response.BaseResponse
+import me.dungngminh.verygoodblogapp.data.remote.model.response.auth.LoginUserResponse
 import retrofit2.Retrofit
 import retrofit2.create
 import retrofit2.http.Body
@@ -19,9 +19,9 @@ interface ApiService {
 
     @Headers("@: NoAuth")
     @POST("api/auth/register")
-    fun register(
+    suspend fun register(
         @Body body: RegisterUserBody,
-    )
+    ): BaseResponse<Any>
 
     companion object Factory {
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()

@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSource
 import me.dungngminh.verygoodblogapp.data.remote.ApiService
-import me.dungngminh.verygoodblogapp.data.remote.body.LoginUserBody
-import me.dungngminh.verygoodblogapp.data.remote.body.RegisterUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.LoginUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.RegisterUserBody
 import me.dungngminh.verygoodblogapp.di.IoDispatcher
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package me.dungngminh.verygoodblogapp.data.remote.body
+package me.dungngminh.verygoodblogapp.data.remote.model.body
 
 import com.squareup.moshi.Json
 

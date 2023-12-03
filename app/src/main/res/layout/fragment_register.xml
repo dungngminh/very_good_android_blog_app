@@ -55,9 +55,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFullname"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:maxLines="1"
-                android:layout_height="wrap_content" />
+                android:inputType="text"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -138,8 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/btnRegister"
-            app:layout_constraintStart_toStartOf="@+id/btnRegister"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toBottomOf="@+id/tilConfirmationPassword" />
 
         <com.google.android.material.button.MaterialButton

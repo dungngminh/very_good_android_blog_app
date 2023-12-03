@@ -49,28 +49,27 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         collectState()
+        bindEvent()
     }
 
-    override fun onStart() {
-        super.onStart()
-        bindViewModel()
-    }
-
-    private fun bindViewModel() {
+    private fun bindEvent() {
         binding.etEmail
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.changeEmail(it.toString()) }
             .launchIn(lifecycleScope)
 
         binding.etPassword
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.changePassword(it.toString()) }
             .launchIn(lifecycleScope)
 
         binding.btnLogin
             .clicks()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.requestLogin() }
             .launchIn(lifecycleScope)
     }
