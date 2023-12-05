@@ -9,5 +9,9 @@
         android:id="@+id/homeFragment"
         android:name="me.dungngminh.verygoodblogapp.features.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
 </navigation>

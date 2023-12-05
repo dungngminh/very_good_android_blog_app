@@ -1,6 +1,47 @@
 package me.dungngminh.verygoodblogapp.features.main.home
 
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
+import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
+import me.dungngminh.verygoodblogapp.repositories.BlogRepository
+import javax.inject.Inject
 
-class HomeViewModel: BaseViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val blogRepository: BlogRepository) :
+    BaseViewModel() {
+
+    private val _state = MutableStateFlow(HomeState.initial)
+
+    val state = _state.asStateFlow()
+
+    init {
+        loadBlogs()
+    }
+
+    private fun loadBlogs() {
+        _state.update { it.copy(loadFirstPageStatus = LoadingStatus.LOADING) }
+        viewModelScope.launch {
+            try {
+                blogRepository
+                    .getBlogs(page = _state.value.currentPage)
+                    .also { blogs ->
+                        _state.update {
+                            it.copy(
+                                blogs = blogs,
+                                filteredBlogs = blogs,
+                                currentPage = _state.value.currentPage + 1,
+                                loadFirstPageStatus = LoadingStatus.DONE
+                            )
+                        }
+                    }
+            } catch (e: Exception) {
+                _state.update { it.copy(loadFirstPageStatus = LoadingStatus.ERROR) }
+            }
+        }
+    }
 }

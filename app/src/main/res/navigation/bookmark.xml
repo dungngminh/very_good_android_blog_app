@@ -9,5 +9,9 @@
         android:id="@+id/bookmarkFragment"
         android:name="me.dungngminh.verygoodblogapp.features.main.bookmark.BookmarkFragment"
         android:label="fragment_bookmark"
-        tools:layout="@layout/fragment_bookmark" />
+        tools:layout="@layout/fragment_bookmark" >
+        <argument
+            android:name="text"
+            app:argType="string" />
+    </fragment>
 </navigation>

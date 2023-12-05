@@ -96,6 +96,9 @@ dependencies {
 
     // Flow binding
     implementation("io.github.reactivecircus.flowbinding:flowbinding-android:1.2.0")
+
+//  Memory leak detection
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 }
 
 // Allow references to generated code

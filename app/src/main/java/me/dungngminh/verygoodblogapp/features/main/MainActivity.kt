@@ -1,9 +1,7 @@
 package me.dungngminh.verygoodblogapp.features.main
 
 import android.os.Bundle
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,10 +14,20 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupNavigationBar()
+    }
 
+    private fun setupNavigationBar() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-        bottomNavigationView.setupWithNavController(navHostFragment.navController)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+
+        val navController = navHostFragment.navController
+
+        bottomNavigationView.setupWithNavController(navController)
+    }
+
+    private fun collectState(){
+
     }
 }

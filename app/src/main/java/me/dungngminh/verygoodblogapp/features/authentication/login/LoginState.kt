@@ -22,8 +22,8 @@ data class LoginState(
                 isPasswordFirstChanged = false,
                 loadingStatus = LoadingStatus.INITIAL,
                 error = null,
-                emailValidationError = null,
-                passwordValidationError = null,
+                emailValidationError = ValidationError.EMPTY,
+                passwordValidationError = ValidationError.EMPTY,
             )
     }
 

@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSource
 import me.dungngminh.verygoodblogapp.data.remote.ApiService
-import me.dungngminh.verygoodblogapp.data.remote.model.body.LoginUserBody
-import me.dungngminh.verygoodblogapp.data.remote.model.body.RegisterUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.auth.LoginUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.auth.RegisterUserBody
 import me.dungngminh.verygoodblogapp.di.IoDispatcher
 import javax.inject.Inject
 
@@ -20,15 +20,14 @@ constructor(
         email: String,
         password: String,
     ) {
-        withContext(ioDispatcher) {
+        return withContext(ioDispatcher) {
             apiService.login(
                 body =
                 LoginUserBody(
                     email = email,
                     password = password,
-                ),
-            ).also {
-                val data = it.unwrap()
+                )
+            ).unwrap().also { data ->
                 localDataSource.run {
                     jwt = data.token
                     userId = data.id
@@ -37,13 +36,14 @@ constructor(
         }
     }
 
+
     suspend fun register(
         fullName: String,
         email: String,
         password: String,
         confirmationPassword: String,
     ) {
-        withContext(ioDispatcher) {
+        return withContext(ioDispatcher) {
             apiService.register(
                 body =
                 RegisterUserBody(

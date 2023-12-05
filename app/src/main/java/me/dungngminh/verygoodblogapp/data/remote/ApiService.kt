@@ -1,14 +1,17 @@
 package me.dungngminh.verygoodblogapp.data.remote
 
-import me.dungngminh.verygoodblogapp.data.remote.model.body.LoginUserBody
-import me.dungngminh.verygoodblogapp.data.remote.model.body.RegisterUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.auth.LoginUserBody
+import me.dungngminh.verygoodblogapp.data.remote.model.body.auth.RegisterUserBody
 import me.dungngminh.verygoodblogapp.data.remote.model.response.BaseResponse
 import me.dungngminh.verygoodblogapp.data.remote.model.response.auth.LoginUserResponse
+import me.dungngminh.verygoodblogapp.data.remote.model.response.blog.BlogResponse
 import retrofit2.Retrofit
 import retrofit2.create
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     @Headers("@: NoAuth")
@@ -22,6 +25,16 @@ interface ApiService {
     suspend fun register(
         @Body body: RegisterUserBody,
     ): BaseResponse<Any>
+
+    @GET("api/blogs")
+    suspend fun getBlogs(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+    ): BaseResponse<List<BlogResponse>>
+
+
+//    @GET("api/")
+
 
     companion object Factory {
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()

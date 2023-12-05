@@ -2,8 +2,9 @@ package me.dungngminh.verygoodblogapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -14,8 +15,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import me.dungngminh.verygoodblogapp.BuildConfig
 import me.dungngminh.verygoodblogapp.data.local.LocalUserDataSource
 import me.dungngminh.verygoodblogapp.data.remote.ApiService
+import me.dungngminh.verygoodblogapp.data.remote.adapter.CategoryResponseAdapter
+import me.dungngminh.verygoodblogapp.data.remote.adapter.LocalDateTimeAdapter
 import me.dungngminh.verygoodblogapp.data.remote.interceptor.AuthInterceptor
 import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
+import me.dungngminh.verygoodblogapp.repositories.BlogRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -48,13 +52,15 @@ object DataModule {
         return LocalUserDataSource(sharedPreferences)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
     fun provideMoshi(): Moshi =
         Moshi
             .Builder()
-            .add(KotlinJsonAdapterFactory())
-            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .addLast(KotlinJsonAdapterFactory())
+            .add(CategoryResponseAdapter())
+            .add(LocalDateTimeAdapter())
             .build()
 
     @Provides
@@ -98,6 +104,18 @@ object DataModule {
             apiService = apiService,
             localDataSource = localUserDataSource,
             ioDispatcher = ioDispatcher,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideBlogRepository(
+        apiService: ApiService,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ): BlogRepository {
+        return BlogRepository(
+            apiService = apiService,
+            ioDispatcher = ioDispatcher
         )
     }
 }

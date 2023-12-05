@@ -1,6 +1,7 @@
 package me.dungngminh.verygoodblogapp.models
 
-enum class BlogCategory {
+enum class Category {
+    ALL,
     BUSINESS,
     TECHNOLOGY,
     FASHION,
