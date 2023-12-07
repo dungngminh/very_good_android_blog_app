@@ -59,4 +59,6 @@ constructor(
     fun checkAuth(): Boolean {
         return localDataSource.jwt != null && localDataSource.userId != null
     }
+
+    fun logout() = localDataSource.deleteAll()
 }

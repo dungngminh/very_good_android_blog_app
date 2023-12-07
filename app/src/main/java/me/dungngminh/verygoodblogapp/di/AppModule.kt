@@ -20,6 +20,7 @@ import me.dungngminh.verygoodblogapp.data.remote.adapter.LocalDateTimeAdapter
 import me.dungngminh.verygoodblogapp.data.remote.interceptor.AuthInterceptor
 import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
 import me.dungngminh.verygoodblogapp.repositories.BlogRepository
+import me.dungngminh.verygoodblogapp.repositories.UserRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -115,6 +116,20 @@ object DataModule {
     ): BlogRepository {
         return BlogRepository(
             apiService = apiService,
+            ioDispatcher = ioDispatcher
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        apiService: ApiService,
+        localUserDataSource: LocalUserDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ): UserRepository {
+        return UserRepository(
+            apiService = apiService,
+            localUserDataSource = localUserDataSource,
             ioDispatcher = ioDispatcher
         )
     }

@@ -6,19 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
@@ -137,12 +130,14 @@ class LoginFragment : BaseFragment() {
                     LoadingStatus.DONE -> {
                         val intent = Intent(requireActivity(), MainActivity::class.java)
                         startActivity(intent)
+                        requireView().snack(getString(R.string.login_successfully))
                         requireActivity().finish()
                     }
 
                     LoadingStatus.ERROR -> {
                         requireView().snack(
-                            state.error?.message ?: "Something went wrong! Please try again",
+                            state.error?.message
+                                ?: getString(R.string.something_went_wrong_please_try_again),
                         )
                         viewModel.errorMessageShown()
                     }

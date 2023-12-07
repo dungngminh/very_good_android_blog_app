@@ -22,5 +22,7 @@
     <string name="password_is_not_match">Password is not match</string>
     <string name="popular">Popular</string>
     <string name="other_blogs">Other blogs</string>
+    <string name="something_went_wrong_please_try_again">Something went wrong! Please try again!</string>
+    <string name="login_successfully">Login successfully</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

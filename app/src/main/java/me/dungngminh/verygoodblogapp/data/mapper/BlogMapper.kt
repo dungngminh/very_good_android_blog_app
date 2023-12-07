@@ -13,12 +13,6 @@ fun BlogResponse.toDomainModel(): Blog {
         category = category.toDomainModel(),
         createdAt = createdAt,
         updatedAt = updatedAt,
-        creator = User(
-            id = creator.id,
-            fullName = creator.fullName,
-            email = creator.email,
-            following = creator.following,
-            follower = creator.follower
-        )
+        creator = creator.toDomainUser()
     )
 }

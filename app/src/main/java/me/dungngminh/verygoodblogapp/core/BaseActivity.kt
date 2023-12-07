@@ -7,9 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import timber.log.Timber
 
-open class BaseActivity(
-    @LayoutRes layoutRes: Int,
-) : AppCompatActivity(layoutRes) {
+open class BaseActivity : AppCompatActivity() {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

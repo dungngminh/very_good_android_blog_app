@@ -11,9 +11,9 @@ data class BlogResponse(
     @Json(name = "id") val id: String,
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
-    @Json(name = "imageUrl") val imageUrl: String,
+    @Json(name = "image_url") val imageUrl: String,
     @Json(name = "category") val category: CategoryResponse,
-    @Json(name = "createdAt") val createdAt: LocalDateTime,
-    @Json(name = "updatedAt") val updatedAt: LocalDateTime,
+    @Json(name = "created_at") val createdAt: LocalDateTime,
+    @Json(name = "updated_at") val updatedAt: LocalDateTime,
     @Json(name = "creator") val creator: UserResponse,
 )
