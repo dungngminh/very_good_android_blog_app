@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
+import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.repositories.BlogRepository
 import javax.inject.Inject
 
@@ -43,5 +44,10 @@ class HomeViewModel @Inject constructor(private val blogRepository: BlogReposito
                 _state.update { it.copy(loadFirstPageStatus = LoadingStatus.ERROR) }
             }
         }
+    }
+
+    fun selectCategory(category: Category) {
+        _state.update { it.copy(selectedCategory = category) }
+        // TODO: add Filter blogs by category in backend side
     }
 }

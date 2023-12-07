@@ -24,5 +24,12 @@
     <string name="other_blogs">Other blogs</string>
     <string name="something_went_wrong_please_try_again">Something went wrong! Please try again!</string>
     <string name="login_successfully">Login successfully</string>
+    <string name="all">All</string>
+    <string name="business">Business</string>
+    <string name="technology">Technology</string>
+    <string name="fashion">Fashion</string>
+    <string name="travel">Travel</string>
+    <string name="food">Food</string>
+    <string name="education">Education</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

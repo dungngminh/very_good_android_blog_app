@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -20,9 +21,10 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentHomeBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
-import me.dungngminh.verygoodblogapp.utils.hideSoftKeyboard
+import me.dungngminh.verygoodblogapp.features.main.home.adapters.CategoryAdapter
+import me.dungngminh.verygoodblogapp.utils.HorizontalItemDecoration
+import me.dungngminh.verygoodblogapp.utils.dp
 import me.dungngminh.verygoodblogapp.utils.onDone
-import reactivecircus.flowbinding.android.widget.textChangeEvents
 import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
@@ -36,6 +38,11 @@ class HomeFragment : BaseFragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
 
+    private val categoryAdapter by lazy {
+        CategoryAdapter(
+            homeViewModel::selectCategory,
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +62,18 @@ class HomeFragment : BaseFragment() {
 
     private fun setupView() {
         binding.etSearchBlog.onDone {
-            requireActivity().hideSoftKeyboard()
             clearFocus()
+        }
+
+        binding.rvCategory.run {
+            layoutManager =
+                LinearLayoutManager(
+                    requireActivity(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+            adapter = categoryAdapter
+            addItemDecoration(HorizontalItemDecoration(8.dp))
         }
     }
 
@@ -67,7 +84,7 @@ class HomeFragment : BaseFragment() {
             .skipInitialValue()
             .flowWithLifecycle(lifecycle)
             .onEach {
-                TODO("Handle search event")
+
             }
             .launchIn(lifecycleScope)
     }
