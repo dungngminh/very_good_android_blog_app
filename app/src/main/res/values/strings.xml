@@ -31,5 +31,6 @@
     <string name="travel">Travel</string>
     <string name="food">Food</string>
     <string name="education">Education</string>
+    <string name="sign_out">Sign out</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

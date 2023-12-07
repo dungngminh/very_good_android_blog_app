@@ -4,16 +4,61 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import me.dungngminh.verygoodblogapp.R
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import me.dungngminh.verygoodblogapp.core.BaseFragment
+import me.dungngminh.verygoodblogapp.databinding.FragmentUserBinding
+import me.dungngminh.verygoodblogapp.features.main.MainViewModel
+import reactivecircus.flowbinding.android.view.clicks
 
-class UserFragment : Fragment() {
+class UserFragment : BaseFragment() {
+
+    private var _binding: FragmentUserBinding? = null
+
+    private val binding get() = _binding!!
+
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false)
+    ): View {
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView()
+        bindEvent()
+        collectState()
+    }
+
+
+    private fun setupView() {
+        // TODO: Handle setup User Fragment View
+    }
+
+    private fun bindEvent() {
+        binding.btnSignOut
+            .clicks()
+            .onEach {
+                mainViewModel.requestLogout()
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun collectState() {
+        // TODO: Handle UserFragment State from ViewModel or MainViewModel
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
