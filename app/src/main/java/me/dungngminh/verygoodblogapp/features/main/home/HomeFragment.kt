@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -22,8 +21,8 @@ import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentHomeBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
 import me.dungngminh.verygoodblogapp.features.main.home.adapters.CategoryAdapter
-import me.dungngminh.verygoodblogapp.utils.HorizontalItemDecoration
-import me.dungngminh.verygoodblogapp.utils.dp
+import me.dungngminh.verygoodblogapp.models.Category
+import me.dungngminh.verygoodblogapp.utils.addChip
 import me.dungngminh.verygoodblogapp.utils.onDone
 import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
@@ -65,15 +64,14 @@ class HomeFragment : BaseFragment() {
             clearFocus()
         }
 
-        binding.rvCategory.run {
-            layoutManager =
-                LinearLayoutManager(
-                    requireActivity(),
-                    LinearLayoutManager.HORIZONTAL,
-                    false
+        binding.cgCategory.run {
+            Category.entries.forEach {
+                this.addChip(
+                    category = it,
+                    fragment = this@HomeFragment,
+                    onCategoryPress = homeViewModel::selectCategory
                 )
-            adapter = categoryAdapter
-            addItemDecoration(HorizontalItemDecoration(8.dp))
+            }
         }
     }
 
