@@ -37,11 +37,7 @@ class HomeFragment : BaseFragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
 
-    private val categoryAdapter by lazy {
-        CategoryAdapter(
-            homeViewModel::selectCategory,
-        )
-    }
+    private val categoryAdapter by lazy { CategoryAdapter(homeViewModel::selectCategory) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
