@@ -24,7 +24,7 @@
         </ImageView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnBookmark"
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,48 +63,48 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        app:shapeAppearanceOverlay="@style/roundedImageView"
                         android:id="@+id/ivAvatar"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:contentDescription="Avatar"
-                        android:src="@tools:sample/avatars" />
+                        android:src="@tools:sample/avatars"
+                        app:shapeAppearanceOverlay="@style/circleImageView" />
 
                     <LinearLayout
-                        android:layout_marginStart="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvFullName"
+                            android:id="@+id/tvPopularBlogFullname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textFontWeight="500"
                             android:maxLines="1"
+                            android:text="Nguyen Minh Dung"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:text="Nguyen Minh Dung" />
+                            android:textFontWeight="500" />
 
                         <TextView
-                            android:layout_marginTop="4dp"
-                            android:id="@+id/tvTimeAgo"
+                            android:id="@+id/tvPopularBlogTimeAgo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:layout_weight="1"
                             android:maxLines="1"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:text="40 mins ago" />
+                            android:text="40 mins ago"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvBlogTitle"
+                    android:id="@+id/tvPopularBlogTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
                     android:ellipsize="end"
+                    android:maxLines="2"
                     android:text="Let’s Go Put Ourselves Out of Business"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textFontWeight="600" />

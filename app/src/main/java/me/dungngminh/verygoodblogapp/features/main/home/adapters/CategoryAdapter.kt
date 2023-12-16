@@ -28,7 +28,6 @@ class CategoryAdapter(private val onCategoryClick: (Category) -> Unit) :
                     if (selectedCategory == category) return@setOnClickListener
                     selectedCategory = category
                     onCategoryClick(category)
-//                    notifyItemChanged(position)
                 }
             }
         }
