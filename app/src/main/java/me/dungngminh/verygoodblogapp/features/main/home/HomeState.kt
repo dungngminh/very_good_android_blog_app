@@ -7,14 +7,17 @@ import me.dungngminh.verygoodblogapp.utils.AppConstants
 
 data class HomeState(
     private val blogs: List<Blog>,
+    val homePageBlog: List<HomePageBlog>,
     val filteredBlogs: List<Blog>,
     val selectedCategory: Category,
     val loadFirstPageStatus: LoadingStatus,
     val loadMoreStatus: LoadingStatus,
     val currentPage: Int,
-) {
+
+    ) {
     companion object {
         val initial = HomeState(
+            homePageBlog = emptyList(),
             blogs = emptyList(),
             filteredBlogs = emptyList(),
             selectedCategory = Category.ALL,
@@ -22,5 +25,10 @@ data class HomeState(
             loadMoreStatus = LoadingStatus.INITIAL,
             currentPage = AppConstants.START_BLOG_QUERY_PAGE
         )
+    }
+
+    sealed class HomePageBlog {
+        data class Popular(val blog: Blog) : HomePageBlog()
+        data class Other(val blog: Blog) : HomePageBlog()
     }
 }
