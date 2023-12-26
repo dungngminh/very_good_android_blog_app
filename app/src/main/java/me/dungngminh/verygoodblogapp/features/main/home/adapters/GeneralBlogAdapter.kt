@@ -37,6 +37,7 @@ class GeneralBlogAdapter(
                 ivBlog.load(blog.imageUrl) {
                     crossfade(true)
                 }
+
                 tvCategory.text = blog.category.name
                 tvOtherBlogTitle.text = blog.title
                 tvOtherBlogTimeAgo.text = blog.createdAt.toTimeAgo()
