@@ -9,5 +9,7 @@ class CategoryResponseAdapter {
     fun toJson(type: CategoryResponse): String = type.categoryName
 
     @FromJson
-    fun fromJson(value: String): CategoryResponse = CategoryResponse.valueOf(value)
+    fun fromJson(value: String): CategoryResponse =
+        CategoryResponse.entries.firstOrNull { it.categoryName == value }
+            ?: CategoryResponse.BUSINESS
 }
