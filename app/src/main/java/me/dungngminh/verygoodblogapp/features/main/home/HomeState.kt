@@ -6,7 +6,7 @@ import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.utils.AppConstants
 
 data class HomeState(
-    private val blogs: List<Blog>,
+    val blogs: List<Blog>,
     val homePageBlog: List<HomePageBlog>,
     val filteredBlogs: List<Blog>,
     val selectedCategory: Category,
@@ -28,7 +28,7 @@ data class HomeState(
     }
 
     sealed class HomePageBlog {
-        data class Popular(val blog: Blog) : HomePageBlog()
-        data class Other(val blog: Blog) : HomePageBlog()
+        data class Popular(val blogs: List<Blog>) : HomePageBlog()
+        data class Other(val blogs: List<Blog>) : HomePageBlog()
     }
 }

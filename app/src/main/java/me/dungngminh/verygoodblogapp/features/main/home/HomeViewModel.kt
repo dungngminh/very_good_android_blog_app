@@ -31,10 +31,13 @@ class HomeViewModel @Inject constructor(private val blogRepository: BlogReposito
                 blogRepository
                     .getBlogs(page = _state.value.currentPage)
                     .also { blogs ->
+                        val homePageBlogs = HomeState.HomePageBlog.Other(blogs)
+                        val popularBlogs = HomeState.HomePageBlog.Popular(blogs.take(5))
                         _state.update {
                             it.copy(
                                 blogs = blogs,
                                 filteredBlogs = blogs,
+                                homePageBlog = listOf(popularBlogs, homePageBlogs),
                                 currentPage = _state.value.currentPage + 1,
                                 loadFirstPageStatus = LoadingStatus.DONE
                             )

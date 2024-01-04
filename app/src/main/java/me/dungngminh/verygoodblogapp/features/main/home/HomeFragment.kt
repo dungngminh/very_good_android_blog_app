@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -21,6 +22,7 @@ import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentHomeBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
 import me.dungngminh.verygoodblogapp.features.main.home.adapters.CategoryAdapter
+import me.dungngminh.verygoodblogapp.features.main.home.adapters.HomeAdapter
 import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.utils.addChip
 import me.dungngminh.verygoodblogapp.utils.onDone
@@ -39,13 +41,20 @@ class HomeFragment : BaseFragment() {
 
     private val categoryAdapter by lazy { CategoryAdapter(homeViewModel::selectCategory) }
 
+    private val homeAdapter by lazy {
+        HomeAdapter(
+            onBlogClick = {},
+            onBookmarkClick = {},
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root;
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,6 +78,11 @@ class HomeFragment : BaseFragment() {
                 )
             }
         }
+
+        binding.rcvHomeBlogs.run {
+            adapter = homeAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     private fun bindEvent() {
@@ -88,7 +102,8 @@ class HomeFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     homeViewModel.state.collectLatest { state ->
-                        Timber.d("HomeState:: $state")
+                        Timber.d("HomeViewModelState:: $state")
+                        homeAdapter.submitList(state.homePageBlog)
                     }
                 }
                 launch {
