@@ -42,7 +42,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun bindViewModel() {
-        Timber.d(viewModel::class.toString())
         viewModel
             .state
             .flowWithLifecycle(lifecycle)

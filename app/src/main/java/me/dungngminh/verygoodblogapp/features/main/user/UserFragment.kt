@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.onEach
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentUserBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
+import me.dungngminh.verygoodblogapp.utils.dp
 import reactivecircus.flowbinding.android.view.clicks
+import timber.log.Timber
 
 class UserFragment : BaseFragment() {
 
@@ -36,6 +38,7 @@ class UserFragment : BaseFragment() {
         setupView()
         bindEvent()
         collectState()
+        binding.btnSignOut.textSize = 16.dp.toFloat()
     }
 
 
@@ -44,12 +47,9 @@ class UserFragment : BaseFragment() {
     }
 
     private fun bindEvent() {
-        binding.btnSignOut
-            .clicks()
-            .onEach {
-                mainViewModel.requestLogout()
-            }
-            .launchIn(lifecycleScope)
+        binding.btnSignOut.setOnClickListener {
+            mainViewModel.requestLogout()
+        }
     }
 
     private fun collectState() {
