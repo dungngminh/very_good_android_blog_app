@@ -79,7 +79,7 @@
     <HorizontalScrollView
         android:id="@+id/svChip"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,52 +100,14 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/popular"
-        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-        android:textFontWeight="600"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toBottomOf="@+id/svChip" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPopularBlogs"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
-        android:paddingStart="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/other_blogs"
-        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-        android:textFontWeight="600"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toBottomOf="@+id/rvPopularBlogs" />
-
-    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvHomeBlogs"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="1dp"
-        android:paddingStart="24dp"
-        android:paddingEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/svChip" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

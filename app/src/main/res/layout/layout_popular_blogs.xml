@@ -9,19 +9,20 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:text="@string/popular"
         android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
         android:textFontWeight="600"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPopularBlogs"
+        android:id="@+id/rcvPopularBlogs"
         android:layout_width="match_parent"
         android:layout_height="270dp"
         android:layout_marginTop="24dp"
+        android:clipToPadding="false"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
         app:layout_constraintTop_toBottomOf="@+id/textView5"

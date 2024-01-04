@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="260dp"
     android:layout_height="260dp"
     app:cardCornerRadius="30dp"
@@ -15,11 +14,12 @@
             android:id="@+id/ivBlog"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:contentDescription="Blog Image"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Blog Image">
+            app:layout_constraintTop_toTopOf="parent">
 
         </ImageView>
 
@@ -45,6 +45,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="20dp"
+            app:cardElevation="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -67,7 +68,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:contentDescription="Avatar"
-                        android:src="@tools:sample/avatars"
+                        android:src="@drawable/blank_avatar"
                         app:shapeAppearanceOverlay="@style/circleImageView" />
 
                     <LinearLayout
