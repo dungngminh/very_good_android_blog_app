@@ -54,7 +54,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.12.0-alpha01")
+    implementation("com.google.android.material:material:1.12.0-alpha02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -78,14 +78,14 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
     // Navigation
-    implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
 //    View Model + Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-rc02")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-rc02")
 
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -96,6 +96,9 @@ dependencies {
 
     // Flow binding
     implementation("io.github.reactivecircus.flowbinding:flowbinding-android:1.2.0")
+
+    // Coil
+    implementation("io.coil-kt:coil:2.5.0")
 
 //  Memory leak detection
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
