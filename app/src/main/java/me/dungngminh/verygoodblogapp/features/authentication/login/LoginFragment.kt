@@ -16,8 +16,8 @@ import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
-import me.dungngminh.verygoodblogapp.features.main.MainActivity
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
+import me.dungngminh.verygoodblogapp.features.main.MainActivity
 import me.dungngminh.verygoodblogapp.utils.onDone
 import me.dungngminh.verygoodblogapp.utils.snack
 import reactivecircus.flowbinding.android.view.clicks
@@ -42,17 +42,7 @@ class LoginFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews()
-        collectState()
-        bindEvent()
-    }
-
-    private fun bindEvent() {
+    override fun bindEvent() {
         binding.etEmail
             .textChanges()
             .skipInitialValue()
@@ -74,15 +64,14 @@ class LoginFragment : BaseFragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun setupViews() {
+    override fun setupView() {
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
         }
-
         binding.etPassword.onDone { clearFocus() }
     }
 
-    private fun collectState() {
+    override fun collectState() {
         viewModel.state
             .flowWithLifecycle(lifecycle)
             .onEach { state ->

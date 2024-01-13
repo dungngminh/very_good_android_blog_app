@@ -38,25 +38,11 @@ class RegisterFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews()
-        collectState()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        bindViewModel()
-    }
-
-    private fun setupViews() {
+    override fun setupView() {
         binding.etConfirmationPassword.onDone { clearFocus() }
     }
 
-    private fun collectState() {
+    override fun collectState() {
         viewModel
             .state
             .flowWithLifecycle(lifecycle)
@@ -144,28 +130,33 @@ class RegisterFragment : BaseFragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun bindViewModel() {
+    override fun bindEvent() {
         binding.etFullname
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.changeFullName(it.toString()) }
             .launchIn(lifecycleScope)
 
         binding.etEmail
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.changeEmail(it.toString()) }
             .launchIn(lifecycleScope)
 
         binding.etPassword
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
             .onEach { viewModel.changePassword(it.toString()) }
             .launchIn(lifecycleScope)
 
         binding.etConfirmationPassword
             .textChanges()
             .skipInitialValue()
+            .flowWithLifecycle(lifecycle)
+
             .onEach { viewModel.changeConfirmationPassword(it.toString()) }
             .launchIn(lifecycleScope)
 

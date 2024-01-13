@@ -10,12 +10,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import me.dungngminh.verygoodblogapp.MainGraphDirections
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.core.clearFocus
@@ -43,7 +44,10 @@ class HomeFragment : BaseFragment() {
 
     private val homeAdapter by lazy {
         HomeAdapter(
-            onBlogClick = {},
+            onBlogClick = {
+                val action = MainGraphDirections.actionGlobalBlogDetailFragment(it)
+                findNavController().navigate(action)
+            },
             onBookmarkClick = {},
         )
     }
@@ -57,14 +61,7 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupView()
-        bindEvent()
-        collectState()
-    }
-
-    private fun setupView() {
+    override fun setupView() {
         binding.etSearchBlog.onDone {
             clearFocus()
         }
@@ -81,11 +78,10 @@ class HomeFragment : BaseFragment() {
 
         binding.rcvHomeBlogs.run {
             adapter = homeAdapter
-            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun bindEvent() {
+    override fun bindEvent() {
         binding
             .etSearchBlog
             .textChanges()
@@ -97,7 +93,7 @@ class HomeFragment : BaseFragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun collectState() {
+    override fun collectState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {

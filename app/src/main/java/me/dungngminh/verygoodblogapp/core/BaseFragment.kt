@@ -20,6 +20,21 @@ open class BaseFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("$this::onViewCreated: $view, $savedInstanceState")
+        setupView()
+        bindEvent()
+        collectState()
+    }
+
+    open fun setupView() {
+
+    }
+
+    open fun bindEvent() {
+
+    }
+
+    open fun collectState() {
+
     }
 
     @CallSuper
