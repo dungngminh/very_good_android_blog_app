@@ -32,5 +32,6 @@
     <string name="food">Food</string>
     <string name="education">Education</string>
     <string name="sign_out">Sign out</string>
+    <string name="add_new_blog">Add new blog</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
