@@ -9,7 +9,9 @@ import coil.load
 import me.dungngminh.verygoodblogapp.databinding.ItemOtherBlogBinding
 import me.dungngminh.verygoodblogapp.models.Blog
 
-class OtherBlogAdapter : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHolder>(object :
+class OtherBlogAdapter(
+    private val onBlogClick: (Blog) -> Unit,
+) : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHolder>(object :
     DiffUtil.ItemCallback<Blog>() {
     override fun areItemsTheSame(oldItem: Blog, newItem: Blog): Boolean {
         return oldItem.id == newItem.id
@@ -27,9 +29,13 @@ class OtherBlogAdapter : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHol
                     crossfade(true)
                     crossfade(500)
                     error(android.R.drawable.stat_notify_error)
+                    allowHardware(false)
                 }
                 tvOtherBlogCategory.text = blog.category.name
                 tvOtherBlogTitle.text = blog.title
+                root.setOnClickListener {
+                    onBlogClick(blog)
+                }
             }
         }
     }

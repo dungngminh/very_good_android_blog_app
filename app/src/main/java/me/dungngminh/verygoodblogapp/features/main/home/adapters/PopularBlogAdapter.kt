@@ -9,7 +9,10 @@ import coil.load
 import me.dungngminh.verygoodblogapp.databinding.ItemPopularBlogBinding
 import me.dungngminh.verygoodblogapp.models.Blog
 
-class PopularBlogAdapter : ListAdapter<Blog, PopularBlogAdapter.PopularBlogItemViewHolder>(object :
+class PopularBlogAdapter(
+    private val onBlogClick: (Blog) -> Unit,
+    private val onBookmarkClick: (Blog) -> Unit,
+) : ListAdapter<Blog, PopularBlogAdapter.PopularBlogItemViewHolder>(object :
     DiffUtil.ItemCallback<Blog>() {
     override fun areItemsTheSame(oldItem: Blog, newItem: Blog): Boolean {
         return oldItem.id == newItem.id
@@ -27,10 +30,12 @@ class PopularBlogAdapter : ListAdapter<Blog, PopularBlogAdapter.PopularBlogItemV
                     crossfade(true)
                     crossfade(500)
                     error(android.R.drawable.stat_notify_error)
+                    allowHardware(false)
                 }
                 tvPopularBlogFullname.text = blog.creator.fullName
                 tvPopularBlogTitle.text = blog.title
-
+                btnBookmark.setOnClickListener { onBookmarkClick(blog) }
+                root.setOnClickListener { onBlogClick(blog) }
             }
         }
     }

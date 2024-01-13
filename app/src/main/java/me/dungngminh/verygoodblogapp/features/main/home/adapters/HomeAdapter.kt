@@ -38,7 +38,10 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(popularBlogs: List<Blog>) {
             binding.rcvPopularBlogs.run {
-                adapter = PopularBlogAdapter().apply {
+                adapter = PopularBlogAdapter(
+                    onBlogClick = onBlogClick,
+                    onBookmarkClick = onBookmarkClick,
+                ).apply {
                     submitList(popularBlogs)
                 }
                 addItemDecoration(
@@ -56,7 +59,9 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(otherBlogs: List<Blog>) {
             binding.rcvOtherBlogs.run {
-                adapter = OtherBlogAdapter().apply {
+                adapter = OtherBlogAdapter(
+                    onBlogClick = onBlogClick,
+                ).apply {
                     submitList(otherBlogs)
                 }
                 // add space between items vertically
