@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_blog"
+    app:startDestination="@id/blogEditorFragment">
+
+    <fragment
+        android:id="@+id/blogEditorFragment"
+        android:name="me.dungngminh.verygoodblogapp.features.new_blog.blog_editor.BlogEditorFragment"
+        android:label="fragment_blog_editor"
+        tools:layout="@layout/fragment_blog_editor">
+        <action
+            android:id="@+id/action_blogEditorFragment_to_submitBlogInfoFragment"
+            app:destination="@id/submitBlogInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/submitBlogInfoFragment"
+        android:name="me.dungngminh.verygoodblogapp.features.new_blog.submit_blog_info.SubmitBlogInfoFragment"
+        android:label="fragment_submit_blog_info"
+        tools:layout="@layout/fragment_submit_blog_info" />
+</navigation>
