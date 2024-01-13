@@ -1,0 +1,37 @@
+name: Build and Upload to Firebase Distribution App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current source code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - run: echo "The workflow is now ready to test your code."
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - run: echo "Building APK."
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug
+
+      - run: echo "Build status report=${{ job.status }}."
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: tester
+          file: app/build/outputs/apk/debug/app-debug.apk
