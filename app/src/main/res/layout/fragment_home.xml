@@ -70,7 +70,7 @@
             android:id="@+id/etSearchBlog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@android:string/search_go"
+            android:hint="@string/search"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1" />
@@ -79,7 +79,7 @@
     <HorizontalScrollView
         android:id="@+id/svChip"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,9 @@
         android:id="@+id/rcvHomeBlogs"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -33,5 +33,6 @@
     <string name="education">Education</string>
     <string name="sign_out">Sign out</string>
     <string name="add_new_blog">Add new blog</string>
+    <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
