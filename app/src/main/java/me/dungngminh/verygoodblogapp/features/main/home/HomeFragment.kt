@@ -11,18 +11,20 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import clearFocus
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.MainGraphDirections
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
-import me.dungngminh.verygoodblogapp.core.clearFocus
 import me.dungngminh.verygoodblogapp.databinding.FragmentHomeBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
-import me.dungngminh.verygoodblogapp.features.main.home.adapters.CategoryAdapter
 import me.dungngminh.verygoodblogapp.features.main.home.adapters.HomeAdapter
 import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.utils.addChip
@@ -39,8 +41,6 @@ class HomeFragment : BaseFragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val homeViewModel: HomeViewModel by viewModels()
-
-    private val categoryAdapter by lazy { CategoryAdapter(homeViewModel::selectCategory) }
 
     private val homeAdapter by lazy {
         HomeAdapter(
@@ -81,14 +81,17 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    @OptIn(FlowPreview::class)
     override fun bindEvent() {
         binding
             .etSearchBlog
             .textChanges()
             .skipInitialValue()
             .flowWithLifecycle(lifecycle)
+            .debounce(300)
+            .filter { it.isNotEmpty() }
             .onEach {
-
+                homeViewModel
             }
             .launchIn(lifecycleScope)
     }

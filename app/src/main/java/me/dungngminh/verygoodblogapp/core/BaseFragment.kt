@@ -10,7 +10,7 @@ open class BaseFragment : Fragment() {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.d("$this::onCreate: $savedInstanceState")
+        Timber.tag("$this").d("$this::onCreate: $savedInstanceState")
     }
 
     @CallSuper
@@ -19,37 +19,28 @@ open class BaseFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("$this::onViewCreated: $view, $savedInstanceState")
+        Timber.tag("$this").d("$this::onViewCreated: $view, $savedInstanceState")
         setupView()
         bindEvent()
         collectState()
     }
 
-    open fun setupView() {
+    protected open fun setupView() {}
 
-    }
+    protected open fun bindEvent() {}
 
-    open fun bindEvent() {
-
-    }
-
-    open fun collectState() {
-
-    }
+    protected open fun collectState() {}
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        Timber.d("$this::onDestroyView")
+        Timber.tag("$this").d("$this::onDestroyView")
     }
 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        Timber.d("$this::onDestroy")
+        Timber.tag("$this").d("$this::onDestroy")
     }
 }
 
-fun Fragment.clearFocus() {
-    activity?.currentFocus?.clearFocus()
-}

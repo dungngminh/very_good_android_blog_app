@@ -53,4 +53,6 @@ class HomeViewModel @Inject constructor(private val blogRepository: BlogReposito
         _state.update { it.copy(selectedCategory = category) }
         // TODO: add Filter blogs by category in backend side
     }
+
+    fun searchBlogs() {}
 }
