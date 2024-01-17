@@ -16,6 +16,7 @@
 ## Technology used
 
 - Android XML for UI
+- AndroidX
 - Firebase Storage
 - Dart Frog for backend
 
