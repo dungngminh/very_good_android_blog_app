@@ -23,7 +23,7 @@ class HomeAdapter(
         override fun areItemsTheSame(oldItem: HomePageBlog, newItem: HomePageBlog): Boolean {
             return when {
                 oldItem is HomePageBlog.Other && newItem is HomePageBlog.Other -> oldItem.blogs == newItem.blogs
-                oldItem is HomePageBlog.Popular && newItem is HomePageBlog.Other -> oldItem.blogs == newItem.blogs
+                oldItem is HomePageBlog.Popular && newItem is HomePageBlog.Popular -> oldItem.blogs == newItem.blogs
                 else -> false
             }
         }
