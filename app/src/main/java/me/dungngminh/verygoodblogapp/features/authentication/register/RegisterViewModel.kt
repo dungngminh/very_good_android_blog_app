@@ -8,14 +8,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginState
-import me.dungngminh.verygoodblogapp.features.authentication.login.LoginViewModel
-import me.dungngminh.verygoodblogapp.features.authentication.register.RegisterState.*
+import me.dungngminh.verygoodblogapp.features.authentication.register.RegisterState.ValidationError
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
 import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
 import me.dungngminh.verygoodblogapp.utils.AppConstants
-import me.dungngminh.verygoodblogapp.utils.isEmail
-import timber.log.Timber
+import me.dungngminh.verygoodblogapp.utils.extensions.isEmail
 import javax.inject.Inject
 
 @HiltViewModel

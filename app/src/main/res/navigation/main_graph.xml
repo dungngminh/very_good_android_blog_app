@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
     app:startDestination="@id/home">
 
@@ -9,20 +8,4 @@
     <include app:graph="@navigation/notification" />
     <include app:graph="@navigation/bookmark" />
     <include app:graph="@navigation/user" />
-    <fragment
-        android:id="@+id/blogDetailFragment"
-        android:name="me.dungngminh.verygoodblogapp.features.BlogDetailFragment"
-        android:label="fragment_blog_detail"
-        tools:layout="@layout/fragment_blog_detail">
-        <argument
-            android:name="blog"
-            app:argType="me.dungngminh.verygoodblogapp.models.Blog" />
-    </fragment>
-    <action
-        android:id="@+id/action_global_blogDetailFragment"
-        app:destination="@id/blogDetailFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>

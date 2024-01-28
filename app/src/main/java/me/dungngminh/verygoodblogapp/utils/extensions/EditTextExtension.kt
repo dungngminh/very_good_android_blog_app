@@ -1,4 +1,4 @@
-package me.dungngminh.verygoodblogapp.utils
+package me.dungngminh.verygoodblogapp.utils.extensions
 
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText

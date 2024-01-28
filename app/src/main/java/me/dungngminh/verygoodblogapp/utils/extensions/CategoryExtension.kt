@@ -1,6 +1,5 @@
-package me.dungngminh.verygoodblogapp.utils
+package me.dungngminh.verygoodblogapp.utils.extensions
 
-import androidx.annotation.StringRes
 import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.models.Category
 

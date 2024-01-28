@@ -1,4 +1,4 @@
-package me.dungngminh.verygoodblogapp.utils
+package me.dungngminh.verygoodblogapp.utils.extensions
 
 import android.content.res.Resources
 import kotlin.math.roundToInt

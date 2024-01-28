@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.BlogDetailFragment">
+    tools:context=".features.blog_detail.BlogDetailFragment">
 
     <include
         android:id="@+id/appBar"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -51,33 +51,32 @@
                         android:id="@+id/tvAuthorName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nguyễn Văn A"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textFontWeight="600" />
+                        android:textFontWeight="600"
+                        tools:text="Nguyễn Văn A" />
 
                     <TextView
-                        android:id="@+id/tvDate"
+                        android:id="@+id/tv_blog_created_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="10/10/2021"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                        android:textFontWeight="300" />
+                        android:textFontWeight="300"
+                        tools:text="10/10/2021" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tv_blog_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Let’s Go Put Ourselves Out of Business"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                 android:textFontWeight="600"
-                app:layout_constraintTop_toBottomOf="@id/layoutAuthor" />
+                tools:text="Let’s Go Put Ourselves Out of Business" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivCover"
@@ -86,12 +85,9 @@
                 android:layout_marginTop="24dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:shapeAppearance="@style/roundedOtherBlogImageView"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
 
     </ScrollView>

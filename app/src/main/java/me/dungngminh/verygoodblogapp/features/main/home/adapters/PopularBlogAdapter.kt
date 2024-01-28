@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import me.dungngminh.verygoodblogapp.databinding.ItemPopularBlogBinding
 import me.dungngminh.verygoodblogapp.models.Blog
+import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
 class PopularBlogAdapter(
     private val onBlogClick: (Blog) -> Unit,
@@ -28,14 +29,12 @@ class PopularBlogAdapter(
             binding.run {
                 ivBlog.load(blog.imageUrl) {
                     crossfade(true)
-                    crossfade(500)
-                    error(android.R.drawable.stat_notify_error)
-                    allowHardware(false)
                 }
                 tvPopularBlogFullname.text = blog.creator.fullName
                 tvPopularBlogTitle.text = blog.title
+                tvPopularBlogTimeAgo.text = blog.createdAt.toTimeAgo()
                 btnBookmark.setOnClickListener { onBookmarkClick(blog) }
-                root.setOnClickListener { onBlogClick(blog) }
+                itemView.setOnClickListener { onBlogClick(blog) }
             }
         }
     }

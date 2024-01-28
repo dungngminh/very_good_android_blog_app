@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import me.dungngminh.verygoodblogapp.databinding.ItemOtherBlogBinding
 import me.dungngminh.verygoodblogapp.models.Blog
+import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
 class OtherBlogAdapter(
     private val onBlogClick: (Blog) -> Unit,
@@ -27,13 +28,12 @@ class OtherBlogAdapter(
             binding.run {
                 ivOtherBlog.load(blog.imageUrl) {
                     crossfade(true)
-                    crossfade(500)
-                    error(android.R.drawable.stat_notify_error)
-                    allowHardware(false)
                 }
                 tvOtherBlogCategory.text = blog.category.name
                 tvOtherBlogTitle.text = blog.title
-                root.setOnClickListener {
+                tvOtherBlogTimeAgo.text = blog.createdAt.toTimeAgo()
+
+                itemView.setOnClickListener {
                     onBlogClick(blog)
                 }
             }

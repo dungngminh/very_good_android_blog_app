@@ -8,7 +8,6 @@ import androidx.fragment.app.activityViewModels
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentUserBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
-import me.dungngminh.verygoodblogapp.utils.dp
 
 class UserFragment : BaseFragment() {
 
@@ -25,10 +24,6 @@ class UserFragment : BaseFragment() {
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun setupView() {
-        binding.btnSignOut.textSize = 16.dp.toFloat()
     }
 
     override fun bindEvent() {

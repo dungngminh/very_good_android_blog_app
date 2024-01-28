@@ -34,5 +34,9 @@
     <string name="sign_out">Sign out</string>
     <string name="add_new_blog">Add new blog</string>
     <string name="search">Search</string>
+    <string name="notification">Notification</string>
+    <string name="home">Home</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="user">User</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

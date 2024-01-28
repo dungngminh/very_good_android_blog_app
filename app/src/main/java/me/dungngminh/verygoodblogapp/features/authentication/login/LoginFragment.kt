@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import clearFocus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -18,8 +17,9 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentLoginBinding
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
-import me.dungngminh.verygoodblogapp.utils.onDone
-import me.dungngminh.verygoodblogapp.utils.snack
+import me.dungngminh.verygoodblogapp.utils.extensions.clearFocus
+import me.dungngminh.verygoodblogapp.utils.extensions.onDone
+import me.dungngminh.verygoodblogapp.utils.extensions.snack
 import reactivecircus.flowbinding.android.view.clicks
 import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber

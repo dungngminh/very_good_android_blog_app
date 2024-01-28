@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/notification"
-        android:enabled="true"
         android:icon="@drawable/ic_bell"
-        android:title="Notification" />
+        android:title="@string/notification" />
+    <item
+        android:enabled="false"
+        android:title="" />
     <item
         android:id="@+id/bookmark"
-        android:enabled="true"
         android:icon="@drawable/ic_bookmark"
-        android:title="Bookmark" />
+        android:title="@string/bookmark" />
     <item
         android:id="@+id/user"
         android:enabled="true"
         android:icon="@drawable/ic_user"
-        android:title="User" />
+        android:title="@string/user" />
 </menu>
