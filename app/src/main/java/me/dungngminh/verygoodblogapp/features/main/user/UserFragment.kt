@@ -10,7 +10,6 @@ import me.dungngminh.verygoodblogapp.databinding.FragmentUserBinding
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
 
 class UserFragment : BaseFragment() {
-
     private var _binding: FragmentUserBinding? = null
 
     private val binding get() = _binding!!
@@ -27,7 +26,7 @@ class UserFragment : BaseFragment() {
     }
 
     override fun bindEvent() {
-        binding.btnSignOut.setOnClickListener {
+        binding.button.setOnClickListener {
             mainViewModel.requestLogout()
         }
     }
@@ -35,7 +34,6 @@ class UserFragment : BaseFragment() {
     override fun collectState() {
         // TODO: Handle UserFragment State from ViewModel or MainViewModel
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
