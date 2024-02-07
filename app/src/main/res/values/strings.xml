@@ -38,5 +38,6 @@
     <string name="home">Home</string>
     <string name="bookmark">Bookmark</string>
     <string name="user">User</string>
+    <string name="password">Password</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

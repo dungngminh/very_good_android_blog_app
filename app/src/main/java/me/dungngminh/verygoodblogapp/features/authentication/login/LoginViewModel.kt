@@ -16,86 +16,86 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
-@Inject
-constructor(
-    private val authenticationRepository: AuthenticationRepository,
-) :
+    @Inject
+    constructor(
+        private val authenticationRepository: AuthenticationRepository,
+    ) :
     BaseViewModel() {
-    private val _state = MutableStateFlow(LoginState.initial)
+        private val _state = MutableStateFlow(LoginState.initial)
 
-    val state = _state.asStateFlow()
+        val state = _state.asStateFlow()
 
-    fun changeEmail(email: String) {
-        if (!_state.value.isEmailFirstChanged) {
+        fun changeEmail(email: String) {
+            if (!_state.value.isEmailFirstChanged) {
+                _state.update {
+                    it.copy(
+                        email = email,
+                        isEmailFirstChanged = true,
+                        emailValidationError = getEmailError(email),
+                    )
+                }
+                return
+            }
             _state.update {
                 it.copy(
                     email = email,
-                    isEmailFirstChanged = true,
                     emailValidationError = getEmailError(email),
                 )
             }
-            return
         }
-        _state.update {
-            it.copy(
-                email = email,
-                emailValidationError = getEmailError(email),
-            )
-        }
-    }
 
-    fun changePassword(password: String) {
-        if (!_state.value.isPasswordFirstChanged) {
+        fun changePassword(password: String) {
+            if (!_state.value.isPasswordFirstChanged) {
+                _state.update {
+                    it.copy(
+                        password = password,
+                        isPasswordFirstChanged = true,
+                        passwordValidationError = getPasswordError(password),
+                    )
+                }
+            }
             _state.update {
                 it.copy(
                     password = password,
-                    isPasswordFirstChanged = true,
                     passwordValidationError = getPasswordError(password),
                 )
             }
         }
-        _state.update {
-            it.copy(
-                password = password,
-                passwordValidationError = getPasswordError(password),
-            )
-        }
-    }
 
-    fun requestLogin() {
-        val state = _state.updateAndGet { it.copy(loadingStatus = LoadingStatus.LOADING) }
-        viewModelScope.launch {
-            try {
-                authenticationRepository.login(email = state.email, password = state.password)
-                _state.update { it.copy(loadingStatus = LoadingStatus.DONE) }
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        loadingStatus = LoadingStatus.ERROR,
-                        error = e.cause,
-                    )
+        fun requestLogin() {
+            val state = _state.updateAndGet { it.copy(loadingStatus = LoadingStatus.LOADING) }
+            viewModelScope.launch {
+                try {
+                    authenticationRepository.login(email = state.email, password = state.password)
+                    _state.update { it.copy(loadingStatus = LoadingStatus.DONE) }
+                } catch (e: Exception) {
+                    _state.update {
+                        it.copy(
+                            loadingStatus = LoadingStatus.ERROR,
+                            error = e.cause,
+                        )
+                    }
                 }
             }
         }
-    }
 
-    fun errorMessageShown() {
-        _state.update { it.copy(loadingStatus = LoadingStatus.INITIAL) }
-    }
+        fun errorMessageShown() {
+            _state.update { it.copy(loadingStatus = LoadingStatus.INITIAL) }
+        }
 
-    companion object {
-        fun getEmailError(email: String): LoginState.ValidationError? =
-            when {
-                email.isEmpty() -> LoginState.ValidationError.EMPTY
-                !email.isEmail() -> LoginState.ValidationError.INVALID
-                else -> null
-            }
+        companion object {
+            fun getEmailError(email: String): LoginState.ValidationError? =
+                when {
+                    email.isEmpty() -> LoginState.ValidationError.EMPTY
+                    !email.isEmail() -> LoginState.ValidationError.INVALID
+                    else -> null
+                }
 
-        fun getPasswordError(password: String): LoginState.ValidationError? =
-            when {
-                password.isEmpty() -> LoginState.ValidationError.EMPTY
-                password.length < AppConstants.MIN_PASSWORD_LENGTH -> LoginState.ValidationError.TOO_SHORT
-                else -> null
-            }
+            fun getPasswordError(password: String): LoginState.ValidationError? =
+                when {
+                    password.isEmpty() -> LoginState.ValidationError.EMPTY
+                    password.length < AppConstants.MIN_PASSWORD_LENGTH -> LoginState.ValidationError.TOO_SHORT
+                    else -> null
+                }
+        }
     }
-}

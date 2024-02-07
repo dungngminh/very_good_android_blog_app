@@ -11,43 +11,26 @@ import me.dungngminh.verygoodblogapp.databinding.LayoutOtherBlogsBinding
 import me.dungngminh.verygoodblogapp.databinding.LayoutPopularBlogsBinding
 import me.dungngminh.verygoodblogapp.features.main.home.HomeState.HomePageBlog
 import me.dungngminh.verygoodblogapp.models.Blog
-import me.dungngminh.verygoodblogapp.utils.HorizontalItemDecoration
-import me.dungngminh.verygoodblogapp.utils.VerticalItemDecoration
+import me.dungngminh.verygoodblogapp.utils.SpacesItemDecoration
 
 class HomeAdapter(
     private val onBlogClick: (Blog) -> Unit,
     private val onBookmarkClick: (Blog) -> Unit,
 ) :
-    ListAdapter<HomePageBlog, RecyclerView.ViewHolder>(object :
-        DiffUtil.ItemCallback<HomePageBlog>() {
-        override fun areItemsTheSame(oldItem: HomePageBlog, newItem: HomePageBlog): Boolean {
-            return when {
-                oldItem is HomePageBlog.Other && newItem is HomePageBlog.Other -> oldItem.blogs == newItem.blogs
-                oldItem is HomePageBlog.Popular && newItem is HomePageBlog.Popular -> oldItem.blogs == newItem.blogs
-                else -> false
-            }
-        }
-
-        override fun areContentsTheSame(oldItem: HomePageBlog, newItem: HomePageBlog): Boolean {
-            return oldItem == newItem
-        }
-    }) {
-
-
+    ListAdapter<HomePageBlog, RecyclerView.ViewHolder>(HomeItemDiff) {
     inner class PopularBlogsViewHolder(private val binding: LayoutPopularBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(popularBlogs: List<Blog>) {
             binding.rcvPopularBlogs.run {
-                adapter = PopularBlogAdapter(
-                    onBlogClick = onBlogClick,
-                    onBookmarkClick = onBookmarkClick,
-                ).apply {
-                    submitList(popularBlogs)
-                }
+                adapter =
+                    PopularBlogAdapter(
+                        onBlogClick = onBlogClick,
+                        onBookmarkClick = onBookmarkClick,
+                    ).apply { submitList(popularBlogs) }
                 addItemDecoration(
-                    HorizontalItemDecoration(
-                        spacing = resources.getDimensionPixelSize(R.dimen.spacing_small)
-                    )
+                    SpacesItemDecoration(
+                        right = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
                 )
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -59,16 +42,17 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(otherBlogs: List<Blog>) {
             binding.rcvOtherBlogs.run {
-                adapter = OtherBlogAdapter(
-                    onBlogClick = onBlogClick,
-                ).apply {
-                    submitList(otherBlogs)
-                }
+                adapter =
+                    OtherBlogAdapter(
+                        onBlogClick = onBlogClick,
+                    ).apply {
+                        submitList(otherBlogs)
+                    }
                 // add space between items vertically
                 addItemDecoration(
-                    VerticalItemDecoration(
-                        spacing = resources.getDimensionPixelSize(R.dimen.spacing_small)
-                    )
+                    SpacesItemDecoration(
+                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
                 )
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -76,29 +60,37 @@ class HomeAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         return when (viewType) {
-            POPULAR_BLOG_VIEW_TYPE -> PopularBlogsViewHolder(
-                LayoutPopularBlogsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+            POPULAR_BLOG_VIEW_TYPE ->
+                PopularBlogsViewHolder(
+                    LayoutPopularBlogsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false,
+                    ),
                 )
-            )
 
-            OTHER_BLOG_VIEW_TYPE -> OtherBlogsViewHolder(
-                LayoutOtherBlogsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+            OTHER_BLOG_VIEW_TYPE ->
+                OtherBlogsViewHolder(
+                    LayoutOtherBlogsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false,
+                    ),
                 )
-            )
 
             else -> error("Invalid viewType: $viewType")
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         when (holder) {
             is PopularBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Popular).blogs)
             is OtherBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Other).blogs)
@@ -115,5 +107,25 @@ class HomeAdapter(
     companion object {
         const val POPULAR_BLOG_VIEW_TYPE = 1
         const val OTHER_BLOG_VIEW_TYPE = 2
+    }
+}
+
+object HomeItemDiff : DiffUtil.ItemCallback<HomePageBlog>() {
+    override fun areItemsTheSame(
+        oldItem: HomePageBlog,
+        newItem: HomePageBlog,
+    ): Boolean {
+        return when {
+            oldItem is HomePageBlog.Other && newItem is HomePageBlog.Other -> oldItem.blogs == newItem.blogs
+            oldItem is HomePageBlog.Popular && newItem is HomePageBlog.Popular -> oldItem.blogs == newItem.blogs
+            else -> false
+        }
+    }
+
+    override fun areContentsTheSame(
+        oldItem: HomePageBlog,
+        newItem: HomePageBlog,
+    ): Boolean {
+        return oldItem == newItem
     }
 }

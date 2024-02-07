@@ -1,7 +1,7 @@
 package me.dungngminh.verygoodblogapp.features.new_blog
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import me.dungngminh.verygoodblogapp.R
 
 class NewBlogActivity : AppCompatActivity() {

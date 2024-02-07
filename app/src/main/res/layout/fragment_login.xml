@@ -74,8 +74,7 @@
                 app:hintEnabled="true"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                app:passwordToggleTint="#673AB7">
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
@@ -90,13 +89,12 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordLayout"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:hint="Password"
+                android:hint="@string/password"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/emailLayout"
@@ -147,17 +145,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_forgot" />
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="80dp"
             android:layout_marginBottom="16dp"
-            android:layout_gravity="center"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
@@ -171,11 +169,12 @@
                 tools:layout_editor_absoluteY="538dp" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_marginStart="4dp"
                 android:id="@+id/tv_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:clickable="true"
+                android:focusable="true"
                 android:text="@string/generic_sign_up"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="@color/md_theme_light_primary"
@@ -184,14 +183,11 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toEndOf="@+id/textView4"
                 app:layout_constraintTop_toTopOf="@+id/textView4"
-                tools:ignore="TouchTargetSizeCheck"
-                android:focusable="true" />
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
 
-
     </LinearLayout>
-
 
 
 </ScrollView>

@@ -39,8 +39,6 @@ android {
         multiDexEnabled = true
     }
 
-
-
     buildTypes {
 
         debug {
@@ -70,7 +68,6 @@ android {
     compileOptions {
 //      https://developer.android.com/studio/write/java8-support#library-desugaring
         isCoreLibraryDesugaringEnabled = true
-
 
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -139,6 +136,9 @@ dependencies {
 
     // Coil
     implementation(libs.coil)
+
+    // Flow extension
+    implementation(libs.flowext)
 
 //  Memory leak detection
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")

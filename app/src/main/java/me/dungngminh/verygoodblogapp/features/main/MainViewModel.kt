@@ -13,41 +13,42 @@ import me.dungngminh.verygoodblogapp.repositories.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val authRepository: AuthenticationRepository,
-) : BaseViewModel() {
+class MainViewModel
+    @Inject
+    constructor(
+        private val userRepository: UserRepository,
+        private val authRepository: AuthenticationRepository,
+    ) : BaseViewModel() {
+        private val _state = MutableStateFlow(MainState.initial)
 
-    private val _state = MutableStateFlow(MainState.initial)
+        val state = _state.asStateFlow()
 
-    val state = _state.asStateFlow()
+        init {
+            getLoggedInUserProfile()
+        }
 
-    init {
-        getLoggedInUserProfile()
-    }
-
-    private fun getLoggedInUserProfile() {
-        _state.update { it.copy(authStatus = AuthStatus.LOADING) }
-        viewModelScope.launch {
-            try {
-                userRepository
-                    .getUserProfile()
-                    .also { user ->
-                        _state.update {
-                            it.copy(
-                                user = user,
-                                authStatus = AuthStatus.LOGGED_IN
-                            )
+        private fun getLoggedInUserProfile() {
+            _state.update { it.copy(authStatus = AuthStatus.LOADING) }
+            viewModelScope.launch {
+                try {
+                    userRepository
+                        .getUserProfile()
+                        .also { user ->
+                            _state.update {
+                                it.copy(
+                                    user = user,
+                                    authStatus = AuthStatus.LOGGED_IN,
+                                )
+                            }
                         }
-                    }
-            } catch (e: Exception) {
-                _state.update { it.copy(authStatus = AuthStatus.ERROR) }
+                } catch (e: Exception) {
+                    _state.update { it.copy(authStatus = AuthStatus.ERROR) }
+                }
             }
         }
-    }
 
-    fun requestLogout() {
-        _state.update { it.copy(authStatus = AuthStatus.SIGNED_OUT) }
-        authRepository.logout()
+        fun requestLogout() {
+            _state.update { it.copy(authStatus = AuthStatus.SIGNED_OUT) }
+            authRepository.logout()
+        }
     }
-}

@@ -116,7 +116,7 @@ object DataModule {
     ): BlogRepository {
         return BlogRepository(
             apiService = apiService,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = ioDispatcher,
         )
     }
 
@@ -130,7 +130,7 @@ object DataModule {
         return UserRepository(
             apiService = apiService,
             localUserDataSource = localUserDataSource,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = ioDispatcher,
         )
     }
 }

@@ -11,17 +11,18 @@ import me.dungngminh.verygoodblogapp.repositories.AuthenticationRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(private val authenticationRepository: AuthenticationRepository) :
+class SplashViewModel
+    @Inject
+    constructor(private val authenticationRepository: AuthenticationRepository) :
     BaseViewModel() {
+        private val _isLoggedInState = MutableStateFlow<Boolean>(false)
 
-    private val _isLoggedInState = MutableStateFlow<Boolean>(false)
+        val isLoggedInState = _isLoggedInState.asStateFlow()
 
-    val isLoggedInState = _isLoggedInState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            val isLoggedIn = authenticationRepository.checkAuth()
-            _isLoggedInState.update { isLoggedIn }
+        init {
+            viewModelScope.launch {
+                val isLoggedIn = authenticationRepository.checkAuth()
+                _isLoggedInState.update { isLoggedIn }
+            }
         }
     }
-}

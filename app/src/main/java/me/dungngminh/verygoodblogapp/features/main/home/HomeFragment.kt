@@ -35,7 +35,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -46,9 +45,10 @@ class HomeFragment : BaseFragment() {
     private val homeAdapter by lazy {
         HomeAdapter(
             onBlogClick = {
-                val intent = Intent(requireActivity(), BlogDetailActivity::class.java).apply {
-                    putExtras(bundleOf("blog" to it))
-                }
+                val intent =
+                    Intent(requireActivity(), BlogDetailActivity::class.java).apply {
+                        putExtras(bundleOf("blog" to it))
+                    }
                 startActivity(intent)
             },
             onBookmarkClick = {},
@@ -74,7 +74,7 @@ class HomeFragment : BaseFragment() {
                 this.addChip(
                     category = it,
                     fragment = this@HomeFragment,
-                    onCategoryPress = homeViewModel::selectCategory
+                    onCategoryPress = homeViewModel::selectCategory,
                 )
             }
         }
@@ -94,7 +94,7 @@ class HomeFragment : BaseFragment() {
             .debounce(300)
             .filter { it.isNotEmpty() }
             .onEach {
-                homeViewModel
+                homeViewModel.searchBlogs()
             }
             .launchIn(lifecycleScope)
     }

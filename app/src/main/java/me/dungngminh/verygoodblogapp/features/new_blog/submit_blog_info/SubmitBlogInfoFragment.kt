@@ -8,12 +8,12 @@ import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentSubmitBlogInfoBinding
 
 class SubmitBlogInfoFragment : BaseFragment() {
-
     private var _binding: FragmentSubmitBlogInfoBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentSubmitBlogInfoBinding.inflate(inflater, container, false)

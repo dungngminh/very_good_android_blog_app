@@ -7,7 +7,6 @@ import android.os.Parcelable
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 
-
 fun Activity.hideSoftKeyboard(windowToken: IBinder? = null) {
     (windowToken ?: currentFocus?.windowToken)?.let {
         val inputMethodManager =
@@ -17,9 +16,13 @@ fun Activity.hideSoftKeyboard(windowToken: IBinder? = null) {
 }
 
 @Suppress("DEPRECATION")
-fun <T : Parcelable?> Activity.getCompactParcelableExtra(key: String, mClass: Class<T>): T {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+fun <T : Parcelable?> Activity.getCompactParcelableExtra(
+    key: String,
+    mClass: Class<T>,
+): T {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         this.intent.getParcelableExtra(key, mClass)!!
-    else
+    } else {
         this.intent.getParcelableExtra(key)!!
+    }
 }

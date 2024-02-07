@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME
 
 @RequiresApi(Build.VERSION_CODES.O)
 class LocalDateTimeAdapter(private var formatter: DateTimeFormatter = ISO_ZONED_DATE_TIME) {
-
     @FromJson
     fun fromJson(value: String): LocalDateTime? {
         return LocalDateTime.parse(value, formatter)

@@ -10,21 +10,22 @@ import me.dungngminh.verygoodblogapp.utils.AppConstants
 import timber.log.Timber
 import javax.inject.Inject
 
-class BlogRepository @Inject constructor(
-    private val apiService: ApiService,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) {
-    suspend fun getBlogs(
-        limit: Int = AppConstants.BLOGS_QUERY_LIMIT,
-        page: Int,
-    ): List<Blog> {
-        return withContext(ioDispatcher) {
-            apiService
-                .getBlogs(limit = limit, page = page)
-                .unwrap()
-                .map { it.toDomainModel() }
-                .also { Timber.d("GetBlogs { page = $page, limit = $limit } ") }
+class BlogRepository
+    @Inject
+    constructor(
+        private val apiService: ApiService,
+        @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    ) {
+        suspend fun getBlogs(
+            limit: Int = AppConstants.BLOGS_QUERY_LIMIT,
+            page: Int,
+        ): List<Blog> {
+            return withContext(ioDispatcher) {
+                apiService
+                    .getBlogs(limit = limit, page = page)
+                    .unwrap()
+                    .map { it.toDomainModel() }
+                    .also { Timber.d("GetBlogs { page = $page, limit = $limit } ") }
+            }
         }
     }
-
-}

@@ -7,5 +7,5 @@ enum class Category {
     FASHION,
     TRAVEL,
     FOOD,
-    EDUCATION
+    EDUCATION,
 }

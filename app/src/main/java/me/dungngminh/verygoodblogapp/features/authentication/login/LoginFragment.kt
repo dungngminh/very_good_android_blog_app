@@ -26,7 +26,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!

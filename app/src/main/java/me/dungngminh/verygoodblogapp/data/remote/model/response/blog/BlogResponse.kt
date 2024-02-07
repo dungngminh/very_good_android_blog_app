@@ -1,10 +1,9 @@
 package me.dungngminh.verygoodblogapp.data.remote.model.response.blog
 
 import com.squareup.moshi.Json
-import java.time.LocalDateTime
-
 import com.squareup.moshi.JsonClass
 import me.dungngminh.verygoodblogapp.data.remote.model.response.user.UserResponse
+import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
 data class BlogResponse(

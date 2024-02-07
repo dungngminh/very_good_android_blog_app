@@ -12,16 +12,24 @@ import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
 class OtherBlogAdapter(
     private val onBlogClick: (Blog) -> Unit,
-) : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHolder>(object :
-    DiffUtil.ItemCallback<Blog>() {
-    override fun areItemsTheSame(oldItem: Blog, newItem: Blog): Boolean {
-        return oldItem.id == newItem.id
-    }
+) : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHolder>(
+        object :
+            DiffUtil.ItemCallback<Blog>() {
+            override fun areItemsTheSame(
+                oldItem: Blog,
+                newItem: Blog,
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun areContentsTheSame(oldItem: Blog, newItem: Blog): Boolean {
-        return oldItem == newItem
-    }
-}) {
+            override fun areContentsTheSame(
+                oldItem: Blog,
+                newItem: Blog,
+            ): Boolean {
+                return oldItem == newItem
+            }
+        },
+    ) {
     inner class OtherBlogItemViewHolder(private val binding: ItemOtherBlogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(blog: Blog) {
@@ -40,18 +48,23 @@ class OtherBlogAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherBlogItemViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): OtherBlogItemViewHolder {
         return OtherBlogItemViewHolder(
             ItemOtherBlogBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
-    override fun onBindViewHolder(holder: OtherBlogItemViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: OtherBlogItemViewHolder,
+        position: Int,
+    ) {
         holder.bind(getItem(position))
     }
-
 }

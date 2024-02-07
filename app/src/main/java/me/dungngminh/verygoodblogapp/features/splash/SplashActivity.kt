@@ -2,7 +2,6 @@ package me.dungngminh.verygoodblogapp.features.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -18,7 +17,6 @@ import me.dungngminh.verygoodblogapp.features.main.MainActivity
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
-
     private val viewModel: SplashViewModel by viewModels()
     private lateinit var binding: ActivitySplashBinding
 

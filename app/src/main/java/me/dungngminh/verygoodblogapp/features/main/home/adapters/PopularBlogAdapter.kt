@@ -13,16 +13,24 @@ import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 class PopularBlogAdapter(
     private val onBlogClick: (Blog) -> Unit,
     private val onBookmarkClick: (Blog) -> Unit,
-) : ListAdapter<Blog, PopularBlogAdapter.PopularBlogItemViewHolder>(object :
-    DiffUtil.ItemCallback<Blog>() {
-    override fun areItemsTheSame(oldItem: Blog, newItem: Blog): Boolean {
-        return oldItem.id == newItem.id
-    }
+) : ListAdapter<Blog, PopularBlogAdapter.PopularBlogItemViewHolder>(
+        object :
+            DiffUtil.ItemCallback<Blog>() {
+            override fun areItemsTheSame(
+                oldItem: Blog,
+                newItem: Blog,
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun areContentsTheSame(oldItem: Blog, newItem: Blog): Boolean {
-        return oldItem == newItem
-    }
-}) {
+            override fun areContentsTheSame(
+                oldItem: Blog,
+                newItem: Blog,
+            ): Boolean {
+                return oldItem == newItem
+            }
+        },
+    ) {
     inner class PopularBlogItemViewHolder(private val binding: ItemPopularBlogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(blog: Blog) {
@@ -39,18 +47,23 @@ class PopularBlogAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularBlogItemViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): PopularBlogItemViewHolder {
         return PopularBlogItemViewHolder(
             ItemPopularBlogBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
-    override fun onBindViewHolder(holder: PopularBlogItemViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: PopularBlogItemViewHolder,
+        position: Int,
+    ) {
         holder.bind(getItem(position))
     }
-
 }

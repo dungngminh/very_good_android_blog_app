@@ -11,7 +11,6 @@ import me.dungngminh.verygoodblogapp.models.Blog
 import me.dungngminh.verygoodblogapp.utils.extensions.getCompactParcelableExtra
 import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
-
 class BlogDetailFragment : BaseFragment() {
     private var _binding: FragmentBlogDetailBinding? = null
     private val binding get() = _binding!!

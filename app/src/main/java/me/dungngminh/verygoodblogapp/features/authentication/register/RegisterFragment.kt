@@ -103,12 +103,13 @@ class RegisterFragment : BaseFragment() {
                         btnRegister.visibility = View.VISIBLE
                     }
 
-                    btnRegister.isEnabled = listOfNotNull(
-                        state.emailValidationError,
-                        state.fullNameValidationError,
-                        state.passwordValidationError,
-                        state.confirmationPasswordValidationError
-                    ).isEmpty()
+                    btnRegister.isEnabled =
+                        listOfNotNull(
+                            state.emailValidationError,
+                            state.fullNameValidationError,
+                            state.passwordValidationError,
+                            state.confirmationPasswordValidationError,
+                        ).isEmpty()
                 }
 
                 // UI Event
@@ -156,7 +157,6 @@ class RegisterFragment : BaseFragment() {
             .textChanges()
             .skipInitialValue()
             .flowWithLifecycle(lifecycle)
-
             .onEach { viewModel.changeConfirmationPassword(it.toString()) }
             .launchIn(lifecycleScope)
 

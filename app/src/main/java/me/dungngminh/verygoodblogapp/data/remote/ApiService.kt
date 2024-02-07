@@ -35,7 +35,9 @@ interface ApiService {
     ): BaseResponse<List<BlogResponse>>
 
     @GET("api/users/{id}/profiles")
-    suspend fun getUserById(@Path("id") id: String): BaseResponse<UserResponse>
+    suspend fun getUserById(
+        @Path("id") id: String,
+    ): BaseResponse<UserResponse>
 
     companion object Factory {
         operator fun invoke(retrofit: Retrofit): ApiService = retrofit.create()

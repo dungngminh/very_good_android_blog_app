@@ -13,22 +13,23 @@ data class HomeState(
     val loadFirstPageStatus: LoadingStatus,
     val loadMoreStatus: LoadingStatus,
     val currentPage: Int,
-
-    ) {
+) {
     companion object {
-        val initial = HomeState(
-            homePageBlog = emptyList(),
-            blogs = emptyList(),
-            filteredBlogs = emptyList(),
-            selectedCategory = Category.ALL,
-            loadFirstPageStatus = LoadingStatus.INITIAL,
-            loadMoreStatus = LoadingStatus.INITIAL,
-            currentPage = AppConstants.START_BLOG_QUERY_PAGE
-        )
+        val initial =
+            HomeState(
+                homePageBlog = emptyList(),
+                blogs = emptyList(),
+                filteredBlogs = emptyList(),
+                selectedCategory = Category.ALL,
+                loadFirstPageStatus = LoadingStatus.INITIAL,
+                loadMoreStatus = LoadingStatus.INITIAL,
+                currentPage = AppConstants.START_BLOG_QUERY_PAGE,
+            )
     }
 
     sealed class HomePageBlog {
         data class Popular(val blogs: List<Blog>) : HomePageBlog()
+
         data class Other(val blogs: List<Blog>) : HomePageBlog()
     }
 }

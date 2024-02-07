@@ -29,6 +29,7 @@ ksp = "1.9.22-1.0.16"
 android-application = "8.2.2"
 fragment = "1.6.2"
 timeago = "4.0.3"
+flow-ext = "0.7.5"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -47,6 +48,7 @@ coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 flowbinding-android = { module = "io.github.reactivecircus.flowbinding:flowbinding-android", version.ref = "flowbinding-android" }
+flowext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
 junit = { module = "junit:junit", version.ref = "junit" }

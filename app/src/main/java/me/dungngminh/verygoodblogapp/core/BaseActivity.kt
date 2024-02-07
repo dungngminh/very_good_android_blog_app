@@ -3,7 +3,6 @@ package me.dungngminh.verygoodblogapp.core
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import timber.log.Timber
 

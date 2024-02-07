@@ -10,24 +10,25 @@ import me.dungngminh.verygoodblogapp.models.User
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(
-    private val apiService: ApiService,
-    private val localUserDataSource: LocalUserDataSource,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) {
+class UserRepository
+    @Inject
+    constructor(
+        private val apiService: ApiService,
+        private val localUserDataSource: LocalUserDataSource,
+        @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    ) {
+        suspend fun getUserProfile(): User {
+            val userId = localUserDataSource.userId ?: ""
+            return getUserById(id = userId)
+        }
 
-    suspend fun getUserProfile(): User {
-        val userId = localUserDataSource.userId ?: ""
-        return getUserById(id = userId)
-    }
-
-    suspend fun getUserById(id: String): User {
-        return withContext(ioDispatcher) {
-            apiService
-                .getUserById(id)
-                .unwrap()
-                .toDomainUser()
-                .also { Timber.d("GetUserById(id=$id)") }
+        suspend fun getUserById(id: String): User {
+            return withContext(ioDispatcher) {
+                apiService
+                    .getUserById(id)
+                    .unwrap()
+                    .toDomainUser()
+                    .also { Timber.d("GetUserById(id=$id)") }
+            }
         }
     }
-}

@@ -13,46 +13,49 @@ import me.dungngminh.verygoodblogapp.repositories.BlogRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val blogRepository: BlogRepository) :
+class HomeViewModel
+    @Inject
+    constructor(private val blogRepository: BlogRepository) :
     BaseViewModel() {
+        private val _state = MutableStateFlow(HomeState.initial)
 
-    private val _state = MutableStateFlow(HomeState.initial)
+        val state = _state.asStateFlow()
 
-    val state = _state.asStateFlow()
+        init {
+            loadBlogs()
+        }
 
-    init {
-        loadBlogs()
-    }
-
-    private fun loadBlogs() {
-        _state.update { it.copy(loadFirstPageStatus = LoadingStatus.LOADING) }
-        viewModelScope.launch {
-            try {
-                blogRepository
-                    .getBlogs(page = _state.value.currentPage)
-                    .also { blogs ->
-                        val homePageBlogs = HomeState.HomePageBlog.Other(blogs)
-                        val popularBlogs = HomeState.HomePageBlog.Popular(blogs.take(5))
-                        _state.update {
-                            it.copy(
-                                blogs = blogs,
-                                filteredBlogs = blogs,
-                                homePageBlog = listOf(popularBlogs, homePageBlogs),
-                                currentPage = _state.value.currentPage + 1,
-                                loadFirstPageStatus = LoadingStatus.DONE
-                            )
+        private fun loadBlogs() {
+            _state.update { it.copy(loadFirstPageStatus = LoadingStatus.LOADING) }
+            viewModelScope.launch {
+                try {
+                    blogRepository
+                        .getBlogs(page = _state.value.currentPage)
+                        .also { blogs ->
+                            val homePageBlogs = HomeState.HomePageBlog.Other(blogs)
+                            val popularBlogs = HomeState.HomePageBlog.Popular(blogs.take(5))
+                            _state.update {
+                                it.copy(
+                                    blogs = blogs,
+                                    filteredBlogs = blogs,
+                                    homePageBlog = listOf(popularBlogs, homePageBlogs),
+                                    currentPage = _state.value.currentPage + 1,
+                                    loadFirstPageStatus = LoadingStatus.DONE,
+                                )
+                            }
                         }
-                    }
-            } catch (e: Exception) {
-                _state.update { it.copy(loadFirstPageStatus = LoadingStatus.ERROR) }
+                } catch (e: Exception) {
+                    _state.update { it.copy(loadFirstPageStatus = LoadingStatus.ERROR) }
+                }
             }
         }
-    }
 
-    fun selectCategory(category: Category) {
-        _state.update { it.copy(selectedCategory = category) }
-        // TODO: add Filter blogs by category in backend side
-    }
+        fun selectCategory(category: Category) {
+            _state.update { it.copy(selectedCategory = category) }
+            // TODO: add Filter blogs by category in backend side
+        }
 
-    fun searchBlogs() {}
-}
+        fun searchBlogs(term: String) {
+            blogRepository.
+        }
+    }

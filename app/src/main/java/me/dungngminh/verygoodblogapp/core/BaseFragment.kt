@@ -43,4 +43,3 @@ open class BaseFragment : Fragment() {
         Timber.tag("$this").d("$this::onDestroy")
     }
 }
-

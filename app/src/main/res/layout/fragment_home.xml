@@ -76,43 +76,14 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/svChip"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilSearchBlog">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/cgCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="24dp"
-            app:chipSpacingHorizontal="8dp"
-            app:selectionRequired="true"
-            app:singleLine="true"
-            app:singleSelection="true">
-
-        </com.google.android.material.chip.ChipGroup>
-    </HorizontalScrollView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvHomeBlogs"
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:clipToPadding="false"
-        android:paddingBottom="24dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svChip"
-        tools:itemCount="2"
-        tools:listitem="@layout/layout_popular_blogs" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@+id/tilSearchBlog"
+        tools:layout="@layout/fragment_blogs_by_category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

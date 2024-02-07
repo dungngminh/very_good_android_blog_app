@@ -20,10 +20,8 @@ import me.dungngminh.verygoodblogapp.utils.extensions.hide
 import me.dungngminh.verygoodblogapp.utils.extensions.show
 import timber.log.Timber
 
-
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
-
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 

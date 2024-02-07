@@ -15,9 +15,10 @@ data class MainState(
     }
 
     companion object {
-        val initial = MainState(
-            user = null,
-            authStatus = AuthStatus.INITIAL
-        )
+        val initial =
+            MainState(
+                user = null,
+                authStatus = AuthStatus.INITIAL,
+            )
     }
 }
