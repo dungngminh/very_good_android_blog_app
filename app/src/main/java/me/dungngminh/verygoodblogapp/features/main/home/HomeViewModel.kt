@@ -56,6 +56,6 @@ class HomeViewModel
         }
 
         fun searchBlogs(term: String) {
-            blogRepository.
+//            blogRepository.
         }
     }
