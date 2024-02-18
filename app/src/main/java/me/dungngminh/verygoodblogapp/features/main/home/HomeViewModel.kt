@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
+import me.dungngminh.verygoodblogapp.features.main.home.ui_model.HomePageBlog
+import me.dungngminh.verygoodblogapp.features.main.home.ui_model.toFilteredBySearchBlogs
 import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.repositories.BlogRepository
 import javax.inject.Inject
@@ -32,8 +34,8 @@ class HomeViewModel
                     blogRepository
                         .getBlogs(page = _state.value.currentPage)
                         .also { blogs ->
-                            val homePageBlogs = HomeState.HomePageBlog.Other(blogs)
-                            val popularBlogs = HomeState.HomePageBlog.Popular(blogs.take(5))
+                            val homePageBlogs = HomePageBlog.Other(blogs)
+                            val popularBlogs = HomePageBlog.Popular(blogs.take(5))
                             _state.update {
                                 it.copy(
                                     blogs = blogs,
@@ -56,11 +58,20 @@ class HomeViewModel
 
         fun searchBlogs(term: String) {
             val currentBlogs = _state.value.blogs
+            if (term.isEmpty()) {
+                val homePageBlogs =
+                    listOf(
+                        HomePageBlog.Popular(currentBlogs.take(5)),
+                        HomePageBlog.Other(currentBlogs),
+                    )
+                _state.update { it.copy(homePageBlog = homePageBlogs) }
+                return
+            }
             val filteredBlogs =
                 currentBlogs.filter {
                     it.title.contains(term, ignoreCase = true) ||
                         it.content.contains(term, ignoreCase = true)
-                }
-            _state.update { it.copy(filteredBlogs = filteredBlogs) }
+                }.toFilteredBySearchBlogs()
+            _state.update { it.copy(homePageBlog = listOf(filteredBlogs)) }
         }
     }

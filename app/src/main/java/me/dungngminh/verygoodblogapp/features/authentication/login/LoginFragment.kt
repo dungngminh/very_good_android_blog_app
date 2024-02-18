@@ -25,7 +25,7 @@ import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!

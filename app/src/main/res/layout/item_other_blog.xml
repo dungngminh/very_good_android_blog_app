@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivOtherBlog"
+            android:id="@+id/iv_blog"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_weight="0"
@@ -49,7 +49,7 @@
                 android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
             <TextView
-                android:id="@+id/tvOtherBlogCategory"
+                android:id="@+id/tv_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

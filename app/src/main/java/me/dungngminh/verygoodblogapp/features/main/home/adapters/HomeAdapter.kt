@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import me.dungngminh.verygoodblogapp.R
-import me.dungngminh.verygoodblogapp.databinding.LayoutOtherBlogsBinding
+import me.dungngminh.verygoodblogapp.databinding.LayoutGeneralBlogsBinding
 import me.dungngminh.verygoodblogapp.databinding.LayoutPopularBlogsBinding
-import me.dungngminh.verygoodblogapp.features.main.home.HomeState.HomePageBlog
+import me.dungngminh.verygoodblogapp.features.main.home.ui_model.HomePageBlog
 import me.dungngminh.verygoodblogapp.models.Blog
 import me.dungngminh.verygoodblogapp.utils.SpacesItemDecoration
 
@@ -38,17 +38,39 @@ class HomeAdapter(
         }
     }
 
-    inner class OtherBlogsViewHolder(private val binding: LayoutOtherBlogsBinding) :
+    inner class OtherBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(otherBlogs: List<Blog>) {
-            binding.rcvOtherBlogs.run {
+            binding.tvTitle.text = itemView.context.getString(R.string.other_blogs)
+            binding.rcvBlogs.run {
                 adapter =
-                    OtherBlogAdapter(
+                    GeneralBlogAdapter(
                         onBlogClick = onBlogClick,
                     ).apply {
                         submitList(otherBlogs)
                     }
-                // add space between items vertically
+                addItemDecoration(
+                    SpacesItemDecoration(
+                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
+                )
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
+    }
+
+    inner class FilterBySearchBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(otherBlogs: List<Blog>) {
+            binding.tvTitle.text = itemView.context.getString(R.string.search_results)
+            binding.rcvBlogs.run {
+                adapter =
+                    GeneralBlogAdapter(
+                        onBlogClick = onBlogClick,
+                    ).apply {
+                        submitList(otherBlogs)
+                    }
                 addItemDecoration(
                     SpacesItemDecoration(
                         bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
@@ -76,7 +98,16 @@ class HomeAdapter(
 
             OTHER_BLOG_VIEW_TYPE ->
                 OtherBlogsViewHolder(
-                    LayoutOtherBlogsBinding.inflate(
+                    LayoutGeneralBlogsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false,
+                    ),
+                )
+
+            FILTER_BY_SEARCH_BLOG_VIEW_TYPE ->
+                FilterBySearchBlogsViewHolder(
+                    LayoutGeneralBlogsBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false,
@@ -94,12 +125,14 @@ class HomeAdapter(
         when (holder) {
             is PopularBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Popular).blogs)
             is OtherBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Other).blogs)
+            is FilterBySearchBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.FilteredBySearch).blogs)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is HomePageBlog.Popular -> POPULAR_BLOG_VIEW_TYPE
+            is HomePageBlog.FilteredBySearch -> FILTER_BY_SEARCH_BLOG_VIEW_TYPE
             else -> OTHER_BLOG_VIEW_TYPE
         }
     }
@@ -107,6 +140,7 @@ class HomeAdapter(
     companion object {
         const val POPULAR_BLOG_VIEW_TYPE = 1
         const val OTHER_BLOG_VIEW_TYPE = 2
+        const val FILTER_BY_SEARCH_BLOG_VIEW_TYPE = 3
     }
 }
 
@@ -118,6 +152,7 @@ object HomeItemDiff : DiffUtil.ItemCallback<HomePageBlog>() {
         return when {
             oldItem is HomePageBlog.Other && newItem is HomePageBlog.Other -> oldItem.blogs == newItem.blogs
             oldItem is HomePageBlog.Popular && newItem is HomePageBlog.Popular -> oldItem.blogs == newItem.blogs
+            oldItem is HomePageBlog.FilteredBySearch && newItem is HomePageBlog.FilteredBySearch -> oldItem.blogs == newItem.blogs
             else -> false
         }
     }

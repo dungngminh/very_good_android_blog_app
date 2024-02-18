@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentSubmitBlogInfoBinding
 
-class SubmitBlogInfoFragment : BaseFragment() {
+class SubmitBlogInfoFragment : BaseFragment(R.layout.fragment_submit_blog_info) {
     private var _binding: FragmentSubmitBlogInfoBinding? = null
     private val binding get() = _binding!!
 

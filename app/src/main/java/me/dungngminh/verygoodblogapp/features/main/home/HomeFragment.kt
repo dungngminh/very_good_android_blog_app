@@ -8,13 +8,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.hoc081098.flowext.select
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,6 +24,7 @@ import me.dungngminh.verygoodblogapp.features.blog_detail.BlogDetailActivity
 import me.dungngminh.verygoodblogapp.features.main.MainViewModel
 import me.dungngminh.verygoodblogapp.features.main.home.adapters.HomeAdapter
 import me.dungngminh.verygoodblogapp.models.Category
+import me.dungngminh.verygoodblogapp.utils.SpacesItemDecoration
 import me.dungngminh.verygoodblogapp.utils.extensions.addChip
 import me.dungngminh.verygoodblogapp.utils.extensions.clearFocus
 import me.dungngminh.verygoodblogapp.utils.extensions.onDone
@@ -32,8 +32,8 @@ import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
-    private val binding by viewBinding<FragmentHomeBinding>(createMethod = CreateMethod.INFLATE)
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
+    private val binding by viewBinding<FragmentHomeBinding>()
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -69,6 +69,11 @@ class HomeFragment : BaseFragment() {
             }
             rcvHomeBlogs.run {
                 adapter = homeAdapter
+                addItemDecoration(
+                    SpacesItemDecoration(
+                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
+                )
             }
         }
     }
@@ -81,9 +86,8 @@ class HomeFragment : BaseFragment() {
             .skipInitialValue()
             .flowWithLifecycle(lifecycle)
             .debounce(300)
-            .filter { it.isNotEmpty() }
             .onEach {
-                homeViewModel.searchBlogs(it.toString())
+                homeViewModel.searchBlogs(it.trim().toString())
             }
             .launchIn(lifecycleScope)
     }
@@ -92,16 +96,18 @@ class HomeFragment : BaseFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    homeViewModel.state.collectLatest { state ->
-                        Timber.d("HomeViewModelState:: $state")
-                        homeAdapter.submitList(state.homePageBlog)
-                    }
+                    homeViewModel.state
+                        .select { it.homePageBlog }
+                        .collectLatest { homePageBlogs ->
+                            Timber.d("HomeViewModelState:: $homePageBlogs")
+                            homeAdapter.submitList(homePageBlogs)
+                        }
                 }
                 launch {
-                    mainViewModel.state.collectLatest { state ->
-                        Timber.d("MainViewModelState:: $state")
+                    mainViewModel.state.select { it.user }.collectLatest { user ->
+                        Timber.d("MainViewModelState:: $user")
                         binding.tvUsername.text =
-                            getString(R.string.hello_user, state.user?.fullName)
+                            getString(R.string.hello_user, user?.fullName)
                     }
                 }
             }

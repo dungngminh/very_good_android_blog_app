@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import coil.load
+import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseFragment
 import me.dungngminh.verygoodblogapp.databinding.FragmentBlogDetailBinding
 import me.dungngminh.verygoodblogapp.models.Blog
 import me.dungngminh.verygoodblogapp.utils.extensions.getCompactParcelableExtra
 import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
-class BlogDetailFragment : BaseFragment() {
+class BlogDetailFragment : BaseFragment(R.layout.fragment_blog_detail) {
     private var _binding: FragmentBlogDetailBinding? = null
     private val binding get() = _binding!!
 

@@ -23,7 +23,7 @@ import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
 @AndroidEntryPoint
-class RegisterFragment : BaseFragment() {
+class RegisterFragment : BaseFragment(R.layout.fragment_register) {
     private var _binding: FragmentRegisterBinding? = null
 
     private val viewModel by viewModels<RegisterViewModel>()

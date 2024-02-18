@@ -10,9 +10,9 @@ import me.dungngminh.verygoodblogapp.databinding.ItemOtherBlogBinding
 import me.dungngminh.verygoodblogapp.models.Blog
 import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
-class OtherBlogAdapter(
+class GeneralBlogAdapter(
     private val onBlogClick: (Blog) -> Unit,
-) : ListAdapter<Blog, OtherBlogAdapter.OtherBlogItemViewHolder>(
+) : ListAdapter<Blog, GeneralBlogAdapter.BlogItemViewHolder>(
         object :
             DiffUtil.ItemCallback<Blog>() {
             override fun areItemsTheSame(
@@ -30,14 +30,14 @@ class OtherBlogAdapter(
             }
         },
     ) {
-    inner class OtherBlogItemViewHolder(private val binding: ItemOtherBlogBinding) :
+    inner class BlogItemViewHolder(private val binding: ItemOtherBlogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(blog: Blog) {
             binding.run {
-                ivOtherBlog.load(blog.imageUrl) {
+                ivBlog.load(blog.imageUrl) {
                     crossfade(true)
                 }
-                tvOtherBlogCategory.text = blog.category.name
+                tvCategory.text = blog.category.name
                 tvOtherBlogTitle.text = blog.title
                 tvOtherBlogTimeAgo.text = blog.createdAt.toTimeAgo()
 
@@ -51,8 +51,8 @@ class OtherBlogAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): OtherBlogItemViewHolder {
-        return OtherBlogItemViewHolder(
+    ): BlogItemViewHolder {
+        return BlogItemViewHolder(
             ItemOtherBlogBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -62,7 +62,7 @@ class OtherBlogAdapter(
     }
 
     override fun onBindViewHolder(
-        holder: OtherBlogItemViewHolder,
+        holder: BlogItemViewHolder,
         position: Int,
     ) {
         holder.bind(getItem(position))

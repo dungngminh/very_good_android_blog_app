@@ -3,10 +3,13 @@ package me.dungngminh.verygoodblogapp.core
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import timber.log.Timber
 
-open class BaseFragment : Fragment() {
+open class BaseFragment(
+    @LayoutRes layoutResId: Int,
+) : Fragment(layoutResId) {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
