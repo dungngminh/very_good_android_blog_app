@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="260dp"
     android:layout_height="260dp"
     app:cardCornerRadius="30dp"
@@ -19,9 +20,8 @@
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageView>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <Button
             android:id="@+id/btnBookmark"
@@ -67,8 +67,8 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:contentDescription="Avatar"
-                        android:src="@drawable/blank_avatar"
-                        app:shapeAppearanceOverlay="@style/circleImageView" />
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        tools:src="@tools:sample/avatars" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

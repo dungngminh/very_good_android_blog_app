@@ -37,7 +37,6 @@ class HomeViewModel
                             _state.update {
                                 it.copy(
                                     blogs = blogs,
-                                    filteredBlogs = blogs,
                                     homePageBlog = listOf(popularBlogs, homePageBlogs),
                                     currentPage = _state.value.currentPage + 1,
                                     loadFirstPageStatus = LoadingStatus.DONE,
@@ -56,6 +55,12 @@ class HomeViewModel
         }
 
         fun searchBlogs(term: String) {
-//            blogRepository.
+            val currentBlogs = _state.value.blogs
+            val filteredBlogs =
+                currentBlogs.filter {
+                    it.title.contains(term, ignoreCase = true) ||
+                        it.content.contains(term, ignoreCase = true)
+                }
+            _state.update { it.copy(filteredBlogs = filteredBlogs) }
         }
     }

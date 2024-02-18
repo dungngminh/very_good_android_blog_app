@@ -14,14 +14,13 @@ junit = "4.13.2"
 lifecycle-runtime-ktx = "2.7.0"
 lifecycle-extensions = "2.2.0"
 lifecycle-viewmodel-ktx = "2.7.0"
-kotlinx-coroutines-android = "1.7.3"
-kotlinx-coroutines-core = "1.7.3"
+kotlinx-coroutines = "1.8.0"
 logging-interceptor = "4.12.0"
 material = "1.12.0-alpha03"
 moshi-adapters = "1.9.2"
 moshi-kotlin = "1.14.0"
 moshi-kotlin-codegen = "1.13.0"
-navigation = "2.7.6"
+navigation = "2.7.7"
 retrofit = "2.9.0"
 timber = "5.0.1"
 kotlin = "1.9.22"
@@ -30,6 +29,7 @@ android-application = "8.2.2"
 fragment = "1.6.2"
 timeago = "4.0.3"
 flow-ext = "0.7.5"
+viewbindingpropertydelegate-full = "1.5.9"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -48,12 +48,12 @@ coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 flowbinding-android = { module = "io.github.reactivecircus.flowbinding:flowbinding-android", version.ref = "flowbinding-android" }
-flowext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
+hoc081098-flowext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
 junit = { module = "junit:junit", version.ref = "junit" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "logging-interceptor" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi-adapters" }
@@ -63,6 +63,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 timeago = { module = "com.github.marlonlom:timeago", version.ref = "timeago" }
+viewbindingpropertydelegate-full = { module = "com.github.kirich1409:viewbindingpropertydelegate-full", version.ref = "viewbindingpropertydelegate-full" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }

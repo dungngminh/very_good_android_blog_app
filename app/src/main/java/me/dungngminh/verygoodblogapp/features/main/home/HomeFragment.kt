@@ -1,10 +1,6 @@
 package me.dungngminh.verygoodblogapp.features.main.home
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,6 +8,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -35,8 +33,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding<FragmentHomeBinding>(createMethod = CreateMethod.INFLATE)
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -46,41 +43,33 @@ class HomeFragment : BaseFragment() {
         HomeAdapter(
             onBlogClick = {
                 val intent =
-                    Intent(requireActivity(), BlogDetailActivity::class.java).apply {
-                        putExtras(bundleOf("blog" to it))
-                    }
+                    Intent(requireActivity(), BlogDetailActivity::class.java)
+                        .apply {
+                            putExtras(bundleOf("blog" to it))
+                        }
                 startActivity(intent)
             },
             onBookmarkClick = {},
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun setupView() {
-        binding.etSearchBlog.onDone {
-            clearFocus()
-        }
-
-        binding.cgCategory.run {
-            Category.entries.forEach {
-                this.addChip(
-                    category = it,
-                    fragment = this@HomeFragment,
-                    onCategoryPress = homeViewModel::selectCategory,
-                )
+        binding.run {
+            etSearchBlog.onDone {
+                clearFocus()
             }
-        }
-
-        binding.rcvHomeBlogs.run {
-            adapter = homeAdapter
+            cgCategory.run {
+                Category.entries.forEach {
+                    this.addChip(
+                        category = it,
+                        fragment = this@HomeFragment,
+                        onCategoryPress = homeViewModel::selectCategory,
+                    )
+                }
+            }
+            rcvHomeBlogs.run {
+                adapter = homeAdapter
+            }
         }
     }
 
@@ -94,7 +83,7 @@ class HomeFragment : BaseFragment() {
             .debounce(300)
             .filter { it.isNotEmpty() }
             .onEach {
-                homeViewModel.searchBlogs()
+                homeViewModel.searchBlogs(it.toString())
             }
             .launchIn(lifecycleScope)
     }
@@ -117,10 +106,5 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -138,7 +138,11 @@ dependencies {
     implementation(libs.coil)
 
     // Flow extension
-    implementation(libs.flowext)
+    implementation(libs.hoc081098.flowext)
+
+    // View binding
+
+    implementation(libs.viewbindingpropertydelegate.full)
 
 //  Memory leak detection
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
