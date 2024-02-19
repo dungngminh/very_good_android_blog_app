@@ -1,7 +1,6 @@
 package me.dungngminh.verygoodblogapp.features.main.home
 
 import android.content.Intent
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -28,6 +27,7 @@ import me.dungngminh.verygoodblogapp.utils.SpacesItemDecoration
 import me.dungngminh.verygoodblogapp.utils.extensions.addChip
 import me.dungngminh.verygoodblogapp.utils.extensions.clearFocus
 import me.dungngminh.verygoodblogapp.utils.extensions.onDone
+import me.dungngminh.verygoodblogapp.utils.extensions.toBundle
 import reactivecircus.flowbinding.android.widget.textChanges
 import timber.log.Timber
 
@@ -44,9 +44,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             onBlogClick = {
                 val intent =
                     Intent(requireActivity(), BlogDetailActivity::class.java)
-                        .apply {
-                            putExtras(bundleOf("blog" to it))
-                        }
+                        .apply { putExtras(it.toBundle()) }
                 startActivity(intent)
             },
             onBookmarkClick = {},
@@ -97,10 +95,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     homeViewModel.state
-                        .select { it.homePageBlog }
-                        .collectLatest { homePageBlogs ->
-                            Timber.d("HomeViewModelState:: $homePageBlogs")
-                            homeAdapter.submitList(homePageBlogs)
+                        .collectLatest { state ->
+                            Timber.d("HomeViewModelState:: $state")
+                            homeAdapter.submitList(state.homePageBlogs)
+                            binding.rcvHomeBlogs.invalidateItemDecorations()
+                            binding.cgCategory.check(state.selectedCategory.ordinal)
                         }
                 }
                 launch {

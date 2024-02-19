@@ -8,7 +8,7 @@ import me.dungngminh.verygoodblogapp.utils.AppConstants
 
 data class HomeState(
     val blogs: List<Blog>,
-    val homePageBlog: List<HomePageBlog>,
+    val homePageBlogs: List<HomePageBlog>,
     val selectedCategory: Category,
     val loadFirstPageStatus: LoadingStatus,
     val loadMoreStatus: LoadingStatus,
@@ -17,7 +17,7 @@ data class HomeState(
     companion object {
         val initial =
             HomeState(
-                homePageBlog = emptyList(),
+                homePageBlogs = emptyList(),
                 blogs = emptyList(),
                 selectedCategory = Category.ALL,
                 loadFirstPageStatus = LoadingStatus.INITIAL,

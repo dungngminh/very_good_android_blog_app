@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import me.dungngminh.verygoodblogapp.core.BaseViewModel
 import me.dungngminh.verygoodblogapp.features.helpers.LoadingStatus
 import me.dungngminh.verygoodblogapp.features.main.home.ui_model.HomePageBlog
+import me.dungngminh.verygoodblogapp.features.main.home.ui_model.toFilteredByCategoryBlogs
 import me.dungngminh.verygoodblogapp.features.main.home.ui_model.toFilteredBySearchBlogs
 import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.repositories.BlogRepository
@@ -39,7 +40,7 @@ class HomeViewModel
                             _state.update {
                                 it.copy(
                                     blogs = blogs,
-                                    homePageBlog = listOf(popularBlogs, homePageBlogs),
+                                    homePageBlogs = listOf(popularBlogs, homePageBlogs),
                                     currentPage = _state.value.currentPage + 1,
                                     loadFirstPageStatus = LoadingStatus.DONE,
                                 )
@@ -52,8 +53,21 @@ class HomeViewModel
         }
 
         fun selectCategory(category: Category) {
+            if (category == Category.ALL) {
+                val homePageBlogs =
+                    listOf(
+                        HomePageBlog.Popular(_state.value.blogs.take(5)),
+                        HomePageBlog.Other(_state.value.blogs),
+                    )
+                _state.update { it.copy(homePageBlogs = homePageBlogs, selectedCategory = category) }
+                return
+            }
             _state.update { it.copy(selectedCategory = category) }
-            // TODO: add Filter blogs by category in backend side
+            val currentBlogs = _state.value.blogs
+            val filteredBlogs =
+                currentBlogs.filter { it.category == category }
+                    .toFilteredByCategoryBlogs(category = category)
+            _state.update { it.copy(homePageBlogs = listOf(filteredBlogs)) }
         }
 
         fun searchBlogs(term: String) {
@@ -64,7 +78,7 @@ class HomeViewModel
                         HomePageBlog.Popular(currentBlogs.take(5)),
                         HomePageBlog.Other(currentBlogs),
                     )
-                _state.update { it.copy(homePageBlog = homePageBlogs) }
+                _state.update { it.copy(homePageBlogs = homePageBlogs) }
                 return
             }
             val filteredBlogs =
@@ -72,6 +86,6 @@ class HomeViewModel
                     it.title.contains(term, ignoreCase = true) ||
                         it.content.contains(term, ignoreCase = true)
                 }.toFilteredBySearchBlogs()
-            _state.update { it.copy(homePageBlog = listOf(filteredBlogs)) }
+            _state.update { it.copy(homePageBlogs = listOf(filteredBlogs)) }
         }
     }

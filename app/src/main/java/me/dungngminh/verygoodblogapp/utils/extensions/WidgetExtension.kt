@@ -1,6 +1,5 @@
 package me.dungngminh.verygoodblogapp.utils.extensions
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
@@ -25,10 +24,9 @@ fun ChipGroup.addChip(
 ) {
     val chip = fragment.layoutInflater.inflate(R.layout.item_category, this, false) as Chip
     chip.apply {
-        id = View.generateViewId()
+        id = category.ordinal
         text = fragment.getString(category.getLocalizedName())
         setOnClickListener { onCategoryPress(category) }
     }
     this.addView(chip)
-    if (category == Category.ALL) this.check(chip.id)
 }

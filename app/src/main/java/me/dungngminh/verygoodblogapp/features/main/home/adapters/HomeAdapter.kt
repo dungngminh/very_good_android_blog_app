@@ -11,7 +11,9 @@ import me.dungngminh.verygoodblogapp.databinding.LayoutGeneralBlogsBinding
 import me.dungngminh.verygoodblogapp.databinding.LayoutPopularBlogsBinding
 import me.dungngminh.verygoodblogapp.features.main.home.ui_model.HomePageBlog
 import me.dungngminh.verygoodblogapp.models.Blog
+import me.dungngminh.verygoodblogapp.models.Category
 import me.dungngminh.verygoodblogapp.utils.SpacesItemDecoration
+import me.dungngminh.verygoodblogapp.utils.extensions.getLocalizedName
 
 class HomeAdapter(
     private val onBlogClick: (Blog) -> Unit,
@@ -40,14 +42,14 @@ class HomeAdapter(
 
     inner class OtherBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(otherBlogs: List<Blog>) {
+        fun bind(blogs: List<Blog>) {
             binding.tvTitle.text = itemView.context.getString(R.string.other_blogs)
             binding.rcvBlogs.run {
                 adapter =
                     GeneralBlogAdapter(
                         onBlogClick = onBlogClick,
                     ).apply {
-                        submitList(otherBlogs)
+                        submitList(blogs)
                     }
                 addItemDecoration(
                     SpacesItemDecoration(
@@ -62,14 +64,39 @@ class HomeAdapter(
 
     inner class FilterBySearchBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(otherBlogs: List<Blog>) {
+        fun bind(blogs: List<Blog>) {
             binding.tvTitle.text = itemView.context.getString(R.string.search_results)
             binding.rcvBlogs.run {
                 adapter =
                     GeneralBlogAdapter(
                         onBlogClick = onBlogClick,
                     ).apply {
-                        submitList(otherBlogs)
+                        submitList(blogs)
+                    }
+                addItemDecoration(
+                    SpacesItemDecoration(
+                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
+                )
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
+    }
+
+    inner class FilterByCategoryBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(
+            blogs: List<Blog>,
+            category: Category,
+        ) {
+            binding.tvTitle.text = itemView.context.getString(category.getLocalizedName())
+            binding.rcvBlogs.run {
+                adapter =
+                    GeneralBlogAdapter(
+                        onBlogClick = onBlogClick,
+                    ).apply {
+                        submitList(blogs)
                     }
                 addItemDecoration(
                     SpacesItemDecoration(
@@ -114,6 +141,15 @@ class HomeAdapter(
                     ),
                 )
 
+            FIlTER_BY_CATEGORY_BLOG_VIEW_TYPE ->
+                FilterByCategoryBlogsViewHolder(
+                    LayoutGeneralBlogsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false,
+                    ),
+                )
+
             else -> error("Invalid viewType: $viewType")
         }
     }
@@ -126,6 +162,10 @@ class HomeAdapter(
             is PopularBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Popular).blogs)
             is OtherBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.Other).blogs)
             is FilterBySearchBlogsViewHolder -> holder.bind((getItem(position) as HomePageBlog.FilteredBySearch).blogs)
+            is FilterByCategoryBlogsViewHolder -> {
+                val item = getItem(position) as HomePageBlog.FilteredByCategory
+                holder.bind(item.blogs, item.category)
+            }
         }
     }
 
@@ -133,6 +173,7 @@ class HomeAdapter(
         return when (getItem(position)) {
             is HomePageBlog.Popular -> POPULAR_BLOG_VIEW_TYPE
             is HomePageBlog.FilteredBySearch -> FILTER_BY_SEARCH_BLOG_VIEW_TYPE
+            is HomePageBlog.FilteredByCategory -> FIlTER_BY_CATEGORY_BLOG_VIEW_TYPE
             else -> OTHER_BLOG_VIEW_TYPE
         }
     }
@@ -141,6 +182,7 @@ class HomeAdapter(
         const val POPULAR_BLOG_VIEW_TYPE = 1
         const val OTHER_BLOG_VIEW_TYPE = 2
         const val FILTER_BY_SEARCH_BLOG_VIEW_TYPE = 3
+        const val FIlTER_BY_CATEGORY_BLOG_VIEW_TYPE = 4
     }
 }
 
