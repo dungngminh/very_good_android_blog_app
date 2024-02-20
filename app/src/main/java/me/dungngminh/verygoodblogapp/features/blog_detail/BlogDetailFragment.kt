@@ -1,6 +1,5 @@
 package me.dungngminh.verygoodblogapp.features.blog_detail
 
-import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import me.dungngminh.verygoodblogapp.R
@@ -11,7 +10,7 @@ import me.dungngminh.verygoodblogapp.utils.extensions.getCompactParcelableExtra
 import me.dungngminh.verygoodblogapp.utils.extensions.toTimeAgo
 
 class BlogDetailFragment : BaseFragment(R.layout.fragment_blog_detail) {
-    private val binding: FragmentBlogDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private val binding: FragmentBlogDetailBinding by viewBinding()
 
     override fun setupView() {
         super.setupView()

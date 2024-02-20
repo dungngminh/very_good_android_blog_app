@@ -53,9 +53,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     override fun setupView() {
         binding.run {
-            etSearchBlog.onDone {
-                clearFocus()
-            }
+            etSearchBlog.onDone { clearFocus() }
             cgCategory.run {
                 Category.entries.forEach {
                     this.addChip(

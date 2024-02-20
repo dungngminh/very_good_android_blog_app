@@ -9,21 +9,18 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import me.dungngminh.verygoodblogapp.R
 import me.dungngminh.verygoodblogapp.core.BaseActivity
-import me.dungngminh.verygoodblogapp.databinding.ActivitySplashBinding
 import me.dungngminh.verygoodblogapp.features.authentication.AuthenticationActivity
 import me.dungngminh.verygoodblogapp.features.main.MainActivity
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity(R.layout.activity_splash) {
     private val viewModel: SplashViewModel by viewModels()
-    private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         bindViewModel()
     }
 
