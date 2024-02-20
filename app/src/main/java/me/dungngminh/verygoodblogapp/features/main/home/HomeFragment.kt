@@ -98,7 +98,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                         .collectLatest { state ->
                             Timber.d("HomeViewModelState:: $state")
                             homeAdapter.submitList(state.homePageBlogs)
-                            binding.rcvHomeBlogs.invalidateItemDecorations()
                             binding.cgCategory.check(state.selectedCategory.ordinal)
                         }
                 }

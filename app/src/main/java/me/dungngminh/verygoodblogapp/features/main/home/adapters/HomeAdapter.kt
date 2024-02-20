@@ -22,90 +22,96 @@ class HomeAdapter(
     ListAdapter<HomePageBlog, RecyclerView.ViewHolder>(HomeItemDiff) {
     inner class PopularBlogsViewHolder(private val binding: LayoutPopularBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(popularBlogs: List<Blog>) {
-            binding.rcvPopularBlogs.run {
-                adapter =
-                    PopularBlogAdapter(
-                        onBlogClick = onBlogClick,
-                        onBookmarkClick = onBookmarkClick,
-                    ).apply { submitList(popularBlogs) }
-                addItemDecoration(
+        private val popularBlogAdapter by lazy {
+            PopularBlogAdapter(
+                onBlogClick = onBlogClick,
+                onBookmarkClick = onBookmarkClick,
+            ).apply {
+                binding.rcvPopularBlogs.adapter = this
+                binding.rcvPopularBlogs.addItemDecoration(
                     SpacesItemDecoration(
-                        right = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                        right = itemView.context.resources.getDimensionPixelSize(R.dimen.spacing_small),
                     ),
                 )
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                binding.rcvPopularBlogs.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             }
+        }
+
+        fun bind(popularBlogs: List<Blog>) {
+            popularBlogAdapter.submitList(popularBlogs)
         }
     }
 
     inner class OtherBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(blogs: List<Blog>) {
-            binding.tvTitle.text = itemView.context.getString(R.string.other_blogs)
-            binding.rcvBlogs.run {
-                adapter =
-                    GeneralBlogAdapter(
-                        onBlogClick = onBlogClick,
-                    ).apply {
-                        submitList(blogs)
-                    }
-                addItemDecoration(
+        private val generalBlogAdapter by lazy {
+            GeneralBlogAdapter(
+                onBlogClick = onBlogClick,
+            ).apply {
+                binding.rcvBlogs.adapter = this
+                binding.rcvBlogs.addItemDecoration(
                     SpacesItemDecoration(
-                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                        bottom = itemView.context.resources.getDimensionPixelSize(R.dimen.spacing_small),
                     ),
                 )
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                binding.rcvBlogs.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
             }
+        }
+
+        fun bind(blogs: List<Blog>) {
+            binding.tvTitle.text = itemView.context.getString(R.string.other_blogs)
+            generalBlogAdapter.submitList(blogs)
         }
     }
 
     inner class FilterBySearchBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(blogs: List<Blog>) {
-            binding.tvTitle.text = itemView.context.getString(R.string.search_results)
-            binding.rcvBlogs.run {
-                adapter =
-                    GeneralBlogAdapter(
-                        onBlogClick = onBlogClick,
-                    ).apply {
-                        submitList(blogs)
-                    }
-                addItemDecoration(
+        private val generalBlogAdapter by lazy {
+            GeneralBlogAdapter(
+                onBlogClick = onBlogClick,
+            ).apply {
+                binding.rcvBlogs.adapter = this
+                binding.rcvBlogs.addItemDecoration(
                     SpacesItemDecoration(
-                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
+                        bottom = itemView.context.resources.getDimensionPixelSize(R.dimen.spacing_small),
                     ),
                 )
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                binding.rcvBlogs.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
             }
+        }
+
+        fun bind(blogs: List<Blog>) {
+            binding.tvTitle.text = itemView.context.getString(R.string.search_results)
+            generalBlogAdapter.submitList(blogs)
         }
     }
 
     inner class FilterByCategoryBlogsViewHolder(private val binding: LayoutGeneralBlogsBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private val generalBlogAdapter by lazy {
+            GeneralBlogAdapter(
+                onBlogClick = onBlogClick,
+            ).apply {
+                binding.rcvBlogs.adapter = this
+                binding.rcvBlogs.addItemDecoration(
+                    SpacesItemDecoration(
+                        bottom = itemView.context.resources.getDimensionPixelSize(R.dimen.spacing_small),
+                    ),
+                )
+                binding.rcvBlogs.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
+
         fun bind(
             blogs: List<Blog>,
             category: Category,
         ) {
             binding.tvTitle.text = itemView.context.getString(category.getLocalizedName())
-            binding.rcvBlogs.run {
-                adapter =
-                    GeneralBlogAdapter(
-                        onBlogClick = onBlogClick,
-                    ).apply {
-                        submitList(blogs)
-                    }
-                addItemDecoration(
-                    SpacesItemDecoration(
-                        bottom = resources.getDimensionPixelSize(R.dimen.spacing_small),
-                    ),
-                )
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            }
+            generalBlogAdapter.submitList(blogs)
         }
     }
 
